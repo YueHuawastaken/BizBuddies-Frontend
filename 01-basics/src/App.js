@@ -2,32 +2,34 @@ import React from 'react';
 import './App.css';
 import logo from './logo.png'
 import Home from './pages/Home'
-import paynow from './paynow.jpg';
-import alipay from './alipay.jpeg';
-import bankTransfer from './bankTransfer.jpg';
-import creditCard from './creditCard.jpeg';
+import ListProductPage from './pages/ListProductPage';
+import ProductContextData from './ProductContext'
+import {BrowserRouter as Router, Routes, Route, Link} from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
-  return (
-    <>
+  return (  
+    <Router>
       <nav class="navbar navbar-expand-lg bg-body-tertiary">
-  <div class="container-fluid"> 
-  <img src={logo} alt="Logo" className="logo" />
-    <a class="navbar-brand" href="#">BizBuddies</a> 
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="container-fluid"> 
+      <Link class="navbar-brand" to="/">BizBuddies
+      <img src={logo} alt="Logo" class="logo"/></Link> 
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
-    </button>
+      </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Login</a>
+          <Link class="nav-link active" aria-current="page" to="#">Login</Link>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Contact Us</a>
+          <Link class="nav-link" to="#">Contact Us</Link>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">About Us</a>
+          <Link class="nav-link" to="#">About Us</Link>
+        </li>
+        <li class="nav-item">
+          <Link class="nav-link" to="ListProduct">List Products</Link>
         </li>
       </ul>
       </div>
@@ -36,19 +38,14 @@ function App() {
         <button class="btn btn-outline-success" type="submit">Search</button>
       </form>
     </div>
-</nav>
-    <Home/>
-    <h1>Payment</h1> 
-<div class = "payment">
-  <img src = {paynow}/>
-  <img src = {bankTransfer}/>
-  <img src = {creditCard}/>
-  <img src = {alipay}/>
-</div>
-<footer>
-      <p>© 2024 BizBuddies. All Rights Reserved.</p>
-    </footer>
-  </>
+    </nav>
+    <ProductContextData>
+      <Routes>
+        <Route path = "/" element = {<Home/>}/>
+        <Route path = "/ListProduct" element = {<ListProductPage/>}/>
+    </Routes>
+    </ProductContextData>
+    </Router>
 ); 
 }
 

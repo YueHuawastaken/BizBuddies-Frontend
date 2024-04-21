@@ -93,3 +93,21 @@ h1 {
   text-align : center;
 }
 
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.card { /* Adjust as needed */
+  transition: transform 0.3s ease;
+  overflow: hidden;
+}
+
+.card:hover {
+  transform: scale(1.1); /* Adjust the scale factor for zoom level */
+}
+
+.card-img {
+  width: 100%;
+  height: auto;
+}
