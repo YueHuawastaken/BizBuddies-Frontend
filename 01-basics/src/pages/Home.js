@@ -10,53 +10,53 @@ import "bootstrap/dist/css/bootstrap.min.css";
 export default function Home () {
     return (
       <>
-    <div class = "image-container">
+    <div className = "image-container">
     <img src={logo} alt ="my logo"/>
     </div>
-    <div class = "header">
+    <div className = "header">
     <h1>Welcome to Biz Buddies !</h1>
     <h2>Your Best Business Partner</h2>
     </div>
-    <div class = "card-container">
-    <div class="card text-bg-dark mb-3"> 
-  <img src={logo} class="card-img"/>
-  <div class="card-img-overlay">
-    <h5 class="card-title">Anime Resin Statue</h5>
+    <div className = "card-container">
+    <div className="card text-bg-dark mb-3"> 
+  <img src={logo} className="card-img"/>
+  <div className="card-img-overlay">
+    <h5 className="card-title">Anime Resin Statue</h5>
   </div>
 </div>
-<div class="card text-bg-dark mb-3"> 
-  <img src={logo} class="card-img"/>
-  <div class="card-img-overlay">
-    <h5 class="card-title">Apparels & Accessories</h5>
+<div className="card text-bg-dark mb-3"> 
+  <img src={logo} className="card-img"/>
+  <div className="card-img-overlay">
+    <h5 className="card-title">Apparels & Accessories</h5>
   </div>
 </div>
-<div class="card text-bg-dark mb-3"> 
+<div className="card text-bg-dark mb-3"> 
   <img src={logo} class="card-img"/>
-  <div class="card-img-overlay">
-    <h5 class="card-title">Kitchen Appliances</h5>
+  <div className="card-img-overlay">
+    <h5 className="card-title">Kitchen Appliances</h5>
   </div>
 </div>
-<div class="card text-bg-dark mb-3"> 
-  <img src={logo} class="card-img"/>
-  <div class="card-img-overlay">
-    <h5 class="card-title">Phones</h5>
+<div className="card text-bg-dark mb-3"> 
+  <img src={logo} className="card-img"/>
+  <div className="card-img-overlay">
+    <h5 className="card-title">Phones</h5>
   </div>
 </div>
-<div class="card text-bg-dark mb-3"> 
-  <img src={logo} class="card-img"/>
-  <div class="card-img-overlay">
-    <h5 class="card-title">Facial Products</h5>
+<div className="card text-bg-dark mb-3"> 
+  <img src={logo} className="card-img"/>
+  <div className="card-img-overlay">
+    <h5 className="card-title">Facial Products</h5>
   </div>
 </div>
-<div class="card text-bg-dark mb-3"> 
-  <img src={logo} class="card-img"/>
-  <div class="card-img-overlay">
-    <h5 class="card-title">Digital Products</h5>
+<div className="card text-bg-dark mb-3"> 
+  <img src={logo} className="card-img"/>
+  <div className="card-img-overlay">
+    <h5 className="card-title">Digital Products</h5>
   </div>
 </div>
 </div>
 <h1>Payment</h1> 
-<div class = "payment">
+<div className = "payment">
   <img src = {paynow}/>
   <img src = {bankTransfer}/>
   <img src = {creditCard}/>
