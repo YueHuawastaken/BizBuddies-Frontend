@@ -6,7 +6,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 export default function ListProductPage () {
     const navigate = useNavigate();
-    const context = useContext (ProductContext);
+    const context = useContext(ProductContext);
     const [formState, setFormState]= useState({
       'productName': '',
       'description': '',
@@ -36,11 +36,12 @@ export default function ListProductPage () {
                 <p>Image : {p.image_url}</p>
                 <p>Price/SGD : ${p.price}</p>
                 <button type="button" class="btn btn-success" onClick={() => 
-	             navigate("/products/edit/"+ p.productId)}>Edit</button>
+	             navigate("/products/edit/"+ p.product_id)}>Edit</button>
                 
-                <button type="button" class="btn btn-danger ms-2" onClick={() => 
-	             context.deleteProduct(p.productId)
-	             }>Delete</button>
+                <button type="button" class="btn btn-danger ms-2" value={p.product_id} onClick={(event) => {
+                    // console.log(p.product_id);
+	                context.deleteProduct(event.target.value)
+                }}>Delete</button>
             </div>
         </div>
      )

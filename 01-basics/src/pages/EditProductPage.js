@@ -18,6 +18,7 @@ export default function EditProductsForm(props)
     const {productId} = useParams(); 
 
     useEffect( ()=> {
+        console.log("product id in use effect on edit product page", productId);
         const fetchProducts = () => {
             let tempProduct = context.getProductByID(productId);
             console.log(tempProduct);
