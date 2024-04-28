@@ -27,9 +27,10 @@ export default function ListProductPage () {
     return (
       <>
       <h1>Your Products</h1>
+      <div className = "card-products">
       {
-        context.getProducts().map( p => <div className = "card">
-            <div className = "card-body">
+        context.getProducts().map( p => 
+            <div className = "card-body-products">
                 <h2>{p.productName}</h2>
                 <p>{p.description}</p>
                 <p>Version : {p.versionName}</p>
@@ -43,11 +44,12 @@ export default function ListProductPage () {
 	                context.deleteProduct(event.target.value)
                 }}>Delete</button>
             </div>
-        </div>
+        
      )
       }
+      </div>
       <h1>List New Product</h1>
-        <div>
+        <div className = "productName">
             <label>Product Name</label>
             <input type="text" name="productName"
                     value={formState.productName}
@@ -55,15 +57,15 @@ export default function ListProductPage () {
                     className="form-control"
             />
         </div>
-        <div>
+        <div className = "description">
             <label>Description</label>
-            <input type="text" name="description"
+            <textarea name="description"
                     value={formState.description}
                     onChange={updateFormField}
                     className="form-control"
             />
         </div>
-        <div>
+        <div className = "version">
             <label>Version</label>
             <input type="text" name="versionName"
                     value={formState.versionName}
@@ -79,7 +81,7 @@ export default function ListProductPage () {
                     className="form-control"
             />
         </div>
-        <div>
+        <div className = "price">
             <label>Price/SGD</label>
             <input type="text" name="price"
                     value={formState.price}

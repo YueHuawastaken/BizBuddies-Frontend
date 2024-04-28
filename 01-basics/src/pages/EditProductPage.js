@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { ProductContext } from "../ProductContext";
 import { useNavigate } from 'react-router-dom';
 
-export default function EditProductsForm(props)
+export default function EditProductsForm()
 {
     const context = useContext(ProductContext); 
     let navigate = useNavigate();
@@ -40,7 +40,7 @@ export default function EditProductsForm(props)
 
     return (
         <div className="centre">
-            <h2>Edit Product</h2>
+            <h2 className = "edit">Edit Product</h2>
             <div className="product-form">
                 <div className="form-group">
                     <label className="form-label">Product Name</label>

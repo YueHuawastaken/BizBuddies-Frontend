@@ -1,4 +1,4 @@
-import React, { useState, createContext, useEffect, useMemo } from 'react';
+import React, { useState, createContext, useEffect} from 'react';
 import axios from 'axios';
 
 export const ProductContext = createContext();
@@ -16,22 +16,7 @@ export default function ProductContextData(props) {
         fetchData ();
     }, []);
     const [products, setProducts] = useState([
-        // {
-        //     "productId": 1,
-        //     "productName": "Naruto Resin",
-        //     "description": "Description of Naruto Resin",
-        //     "versionName": "Naruto with school uniform",
-        //     "image_url": "Naruto.img",
-        //     "price": "550.00"
-        // },
-        // {
-        //     "productId": 2,
-        //     "productName": "Sasuke Resin",
-        //     "description": "Description of Sasuke Resin",
-        //     "versionName": "Sasuke with school uniform",
-        //     "image_url": "Sasuke.img",
-        //     "price": "550.00"
-        // }
+       
     ]);
 
 

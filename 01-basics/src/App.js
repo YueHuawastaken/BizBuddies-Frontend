@@ -4,7 +4,7 @@ import logo from './logo.png';
 import Home from './pages/Home';
 import EditProductsForm from './pages/EditProductPage';
 import ListProductPage from './pages/ListProductPage';
-
+import Aboutus from './pages/Aboutus'
 import ProductContextData from './ProductContext'
 import {BrowserRouter as Router, Routes, Route, Link} from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -28,7 +28,7 @@ function App() {
           <Link className="nav-link" to="#">Contact Us</Link>
         </li>
         <li className="nav-item">
-          <Link className="nav-link" to="#">About Us</Link>
+          <Link className="nav-link" to="Aboutus">About Us</Link>
         </li>
         <li className="nav-item">
           <Link className="nav-link" to="ListProduct">List Products</Link>
@@ -46,6 +46,7 @@ function App() {
         <Route path = "/" element = {<Home/>}/>
         <Route path = "/ListProduct" element = {<ListProductPage/>}/>
         <Route path='/products/edit/:productId' element={<EditProductsForm/>}/>
+        <Route path='/Aboutus' element={<Aboutus/>}/>
     </Routes>
     </ProductContextData>
     </Router>
