@@ -5,7 +5,7 @@ import Container from 'react-bootstrap/esm/Container';
 import Row from 'react-bootstrap/esm/Row';
 import Col from 'react-bootstrap/esm/Col';
 
-import { UserContext } from '../context/user-context';
+import { CustomerContext } from '../context/customer-context';
 import { Link, useNavigate } from 'react-router-dom';
 
 import APIHandler, { setAuthHeader } from '../api/apiHandler';
@@ -13,12 +13,12 @@ import APIHandler, { setAuthHeader } from '../api/apiHandler';
 export default function LoginForCart (){
 
     // context
-    const {setUserName} = useContext(UserContext);
-    const {setUserId} = useContext(UserContext);
-    const {setLoginState} = useContext(UserContext);
+    const {setUserName} = useContext(CustomerContext);
+    const {setCustomerId} = useContext(CustomerContext);
+    const {setLoginState} = useContext(CustomerContext);
 
     // state
-    const [emailAddress, setEmailAddress] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     const [errorNotification, setErrorNotification] = useState('');
@@ -33,7 +33,7 @@ export default function LoginForCart (){
     // Data
     const handleLoginEmail = (event) => {
         setErrorNotification('');
-        setEmailAddress(event.target.value);
+        setEmail(event.target.value);
     }
 
     const handlePassword = (event) => {
@@ -41,8 +41,8 @@ export default function LoginForCart (){
         setPassword(event.target.value);
     }
 
-    const navigateToDashBoard = (userId) => {
-        navigate(`/users/dashboard/${userId}`)
+    const navigateToDashBoard = (customerId) => {
+        navigate(`/customers/dashboard/${customerId}`)
     }
 
     const handleSubmit = async (event) => {
@@ -52,16 +52,16 @@ export default function LoginForCart (){
         const emailRegexPattern = /^[a-zA-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
         const passwordRegexPattern = /^[a-zA-Z0-9._%+\-!@#$&*()]*$/i;
 
-        if (emailAddress === "" && password ===""){
+        if (email === "" && password ===""){
             setErrorNotification('Fields cannot empty')
         }
-        else if (emailAddress === ""){
+        else if (email === ""){
             setErrorNotification('Email cannot be empty')
         }
         else if (password === ""){
             setErrorNotification('password cannot be empty')
         }
-        else if (!emailRegexPattern.test(emailAddress)){
+        else if (!emailRegexPattern.test(email)){
             setErrorNotification('invalid email characters or format')
         }
         else if (!passwordRegexPattern.test(password)){
@@ -74,15 +74,15 @@ export default function LoginForCart (){
             try {
                 console.log('try route hit in login handle submit')
 
-                let loginResponse = await APIHandler.post('/users/login', {
-                    "email": emailAddress,
+                let loginResponse = await APIHandler.post('/customers/login', {
+                    "email": email,
                     "password": password,
                 })
 
                 let accessToken = await loginResponse.data.accessToken
                 let refreshToken = await loginResponse.data.refreshToken
                 
-                let ID = await loginResponse.data.userId
+                let ID = await loginResponse.data.customerId
                 let Username = await loginResponse.data.userName
 
                 console.log('access token react =>', accessToken)
@@ -91,10 +91,10 @@ export default function LoginForCart (){
                 setAuthHeader(accessToken, refreshToken)
                 setLoginState(true);
 
-                await setUserId(ID)
+                await setCustomerId(ID)
                 await setUserName(Username)
 
-                localStorage.setItem("userId", ID)
+                localStorage.setItem("customerId", ID)
                 localStorage.setItem("userName", Username)
 
                 handleGoBack()
@@ -118,7 +118,7 @@ export default function LoginForCart (){
                                 <Form.Control   type="email" 
                                                 placeholder="Enter email"
                                                 name="email"
-                                                value={emailAddress}
+                                                value={email}
                                                 onChange={(event) => handleLoginEmail(event)}
                                 />
                             </Form.Group>                    
@@ -133,7 +133,7 @@ export default function LoginForCart (){
                             </Form.Group>
                             <Form.Group className="ms-4 mb-3">
                                 <Form.Text className="text-muted">
-                                    First time here? <Link to={"/users/register"}> Register </Link>
+                                    First time here? <Link to={"/customers/register"}> Register </Link>
                                 </Form.Text>
                             </Form.Group>
                             
