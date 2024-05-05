@@ -1,19 +1,20 @@
-import React, {useState, useContext, useRef, useEffect} from 'react';
+import React, {useState, useContext, useRef, useEffect } from 'react';
+import { SupplierContext } from '../context/supplier-context';
 
 import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
 
+import { useNavigate, useParams } from 'react-router-dom';
+
 import { CloudinaryContext } from '../context/cloudinary-context';
 import { DashBoardContext } from '../context/dashboard-context';
-import { SupplierContext } from '../context/supplier-context';
 
 import UploadWidget from './uploadWidget';
 
 import APIHandler from '../api/apiHandler';
-import { Navigate, useNavigate } from 'react-router-dom';
 
-export default function AddProductForm(){
+export default function UpdateProductForm(){
 
     const [productName, setProductName] = useState('');
     const [description, setDescription] = useState('');
@@ -22,28 +23,59 @@ export default function AddProductForm(){
     const [price, setPrice] = useState('');
 
     const {supplierId, setSupplierId} = useContext(SupplierContext);
-    const {image_url} = useContext(CloudinaryContext);
+    const {image_url, setImage_Url, imageUploaded, setImageUploaded} = useContext(CloudinaryContext);
+    const {reRender, setReRender} = useContext(DashBoardContext);
+
+    const [singleProductData, setSingleProductData] = useState();
 
     const [errorNotification, setErrorNotification] = useState('');
     const [successNotification, setSuccessNotification] = useState('');
 
-    const {reRender, setReRender} = useContext(DashBoardContext);
-    const {setShowItem} = useContext(DashBoardContext);
-    const {setShowProducts} = useContext(DashBoardContext);
-
     const supplierIdRef = useRef(supplierId);
+
+    const {productId} = useParams();
+
+    const [retrievedProductId, setRetrievedProductId] = useState();
+
+    const navigate = useNavigate();
+
+    function handleGoBack(){
+        navigate(-1);
+    }
+
+    const retrieveProductById = async (productId) => {
+        try{
+            console.log('frontend retrieve product by id hit, supplierId here=>', supplierId)
+            console.log('frontend product params', productId);
+
+            let response = await APIHandler.get(`/suppliers/update/${productId}?supplierId=${supplierId || supplierIdRef.current}`);
+            console.log('retrieving single product', response.data.product);
+
+            setSingleProductData(response.data.products);
+            setProductName(response.data.products.productName);
+            setDescription(response.data.products.description);
+            setVersionName(response.data.products.versionName);
+            setPrice(response.data.products.price);
+            setImage_Url(response.data.products.image_url);
+            setRetrievedProductId(response.data.products.id);
+
+            setImageUploaded(false);
+
+            console.log('success in loading data')
+    
+        } catch (error) {
+            console.error('error retrieving product data', error)
+        }
+    }
 
     useEffect(()=>{
         if (localStorage.getItem('supplierId')){
             setSupplierId(localStorage.getItem('supplierId'))
         }
-    },[])
+        retrieveProductById(productId)
+        .catch((error)=>{console.log('fail to set data', error)})
 
-    const navigate = useNavigate();
-    
-    const navigateToDashBoard = () => {
-        navigate(`/users/dashboard/${supplierId}`)
-    }
+    },[])
 
     const handleSubmit = async (event) => {
 
@@ -78,6 +110,7 @@ export default function AddProductForm(){
             setSuccessNotification('');
 
             const payload = {
+                "productId": retrievedProductId,
                 "productName": productName,
                 "description": description,
                 "versionName": versionName,
@@ -89,34 +122,35 @@ export default function AddProductForm(){
             try {
                 console.log("frontend supplierIdref here", supplierIdRef.current)
                 console.log("frontend payload here", payload);
-                await APIHandler.post(`/suppliers/add-product/${supplierIdRef.current}`, payload);
-
-                setSuccessNotification('Success! Product added');
+                await APIHandler.post(`/suppliers/${productId}/update?supplierId=${supplierIdRef.current}`, payload);
+                
+                console.log('product updated')
+                setSuccessNotification("Product Updated");
                 setTimeout(()=>{
-                    setShowItem('');
-                    setShowProducts(true);
                     setReRender(!reRender);
-                    navigateToDashBoard(supplierId)
-                },1000);
-
+                    handleGoBack()
+                }, 1000);
+                
             } catch (error) {
-                setErrorNotification('Failed to add product');
+                setErrorNotification('Fail to update product');
             }
         }
     }
 
     return(
         <>
-            <Container className="mb-2 mt-3">
-                <h5> List a work </h5>
+            <Button variant="secondary" className="ms-4 mt-2 mb-3" onClick={handleGoBack}> Back </Button>
+
+            {singleProductData ?
+                (<Container className="mb-2 mt-3">
+                <h5> Update work </h5>
                 <Form onSubmit={handleSubmit}>
                     <Form.Group className="mb-3" style={{maxWidth: '350px', minWidth:'350px', maxHeight:'60px'}}>
                         <Form.Label style={{fontSize:"12px"}}>Product Name</Form.Label>
                         <Form.Control   type="text" 
                                         style={{fontSize:"12px"}}
-                                        placeholder="Enter product name"
                                         name="productName"
-                                        value={productName}
+                                        value={productName? productName : singleProductData.productName}
                                         onChange={(event)=> setProductName(event.target.value)}
                         />
                     </Form.Group>
@@ -190,8 +224,14 @@ export default function AddProductForm(){
                                         value={price}
                                         onChange={(event)=>setPrice(event.target.value)}
                         />
-                    </Form.Group>                                           
+                    </Form.Group> 
                 </Form>
+                    {imageUploaded && image_url? ( null ):
+                               (   <div className="mt-4">
+                                        <h6> Existing Picture </h6>
+                                        <img src={singleProductData.image_url} alt="placeholder_image" className="oldpic" style={{maxWidth:'500px'}}/>
+                                    </div>    
+                                )}
                 <UploadWidget />
                 <Form.Text className="mt-2 ms-2 mb-2" style={{color:'red'}}>
                     {errorNotification}
@@ -204,7 +244,8 @@ export default function AddProductForm(){
                             Submit
                     </Button>
                 </div>
-            </Container>
+            </Container>) : (<div className='ms-4'> Loading ... </div>)
+            }
         </>
     )
 }
