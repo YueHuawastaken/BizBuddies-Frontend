@@ -64,7 +64,7 @@ export default function Cart (){
     useEffect(() => {
 
         if (localStorage.getItem("customerId")){
-            setUserId(localStorage.getItem("customerId"));
+            setCustomerId(localStorage.getItem("customerId"));
         }
 
         if (customerId){

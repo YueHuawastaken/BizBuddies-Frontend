@@ -14,12 +14,14 @@ export default function UploadWidget(){
     const cloudinaryUploadPresetRef = useRef(env.CLOUDINARY_UPLOAD_PRESET);
 
     useEffect(() =>{
+        
         cloudinaryRef.current = window.cloudinary;
         setNotification('');
+        console.log("windoe here", window);
 
         console.log('cloudname Ref here', cloudinaryNameRef);
         console.log('cloudpreset ref here', cloudinaryUploadPresetRef);    
-
+        console.log(cloudinaryRef.current)
         widgetRef.current = cloudinaryRef.current.createUploadWidget({
             cloudName: cloudinaryNameRef.current,
             uploadPreset: cloudinaryUploadPresetRef.current,       

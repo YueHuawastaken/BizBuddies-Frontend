@@ -20,12 +20,18 @@ export default function ProductListing (){
     const [showSearchForm, setShowSearchForm] = useState(false);
     
     const retrieveAllProducts = async () => {
-        let response = await APIHandler.get('/products');
-        console.log('retrieving products', response.data);
-        return response.data.products;
+        try {
+            let response = await APIHandler.get('/products');
+            console.log('retrieving products', response.data);
+            return response.data.products;
+        } catch (error) {
+            
+        }
+        
     }
     
     useEffect(() => {
+        console.log("test")
         retrieveAllProducts().then((data)=>{
             console.log('Received data from promise', data);
             setProductsData(data);

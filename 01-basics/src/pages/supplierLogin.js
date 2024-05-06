@@ -82,7 +82,7 @@ export default function SupplierLogin (){
                 let accessToken = await loginResponse.data.accessToken
                 let refreshToken = await loginResponse.data.refreshToken
                 
-                let ID = await loginResponse.data.supplierId
+                let ID = await loginResponse.data.supplier_id
                 let studioShopName = await loginResponse.data.studioShopName
 
                 console.log('access token react =>', accessToken)

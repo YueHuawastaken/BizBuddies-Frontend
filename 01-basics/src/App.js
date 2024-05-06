@@ -16,7 +16,7 @@ import DeletionContextData from './context/delete-context';
 // Pages
 import ProductListing from './pages/productListing';
 import ProductDetails from './pages/productDetails';
-import ProductsBySuppliers from './pages/productsBySuppliers';
+import ProductsBySuppliers from  './pages/productsBySupplier';
 import SupplierLogin from './pages/supplierLogin';
 import Register from './pages/register';
 import Dashboard from './pages/dashboard';

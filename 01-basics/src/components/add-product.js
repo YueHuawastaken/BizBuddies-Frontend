@@ -42,7 +42,7 @@ export default function AddProductForm(){
     const navigate = useNavigate();
     
     const navigateToDashBoard = () => {
-        navigate(`/users/dashboard/${supplierId}`)
+        navigate(`/suppliers/dashboard/${supplierId}`)
     }
 
     const handleSubmit = async (event) => {

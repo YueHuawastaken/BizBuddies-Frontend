@@ -11,7 +11,7 @@ import ProductDetails from "./productDetails";
 
 import { Link, useParams, useNavigate } from 'react-router-dom';
 
-export default function ProductsByUser (){
+export default function ProductsBySuppliers (){
 
     const [productsData, setProductsData] = useState();
 
