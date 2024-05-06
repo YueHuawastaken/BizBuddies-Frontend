@@ -63,18 +63,15 @@ export default function ProductListing (){
                                     <Card style={{ width: '18rem', marginTop: '10px', marginBottom:'20px'}}>
                                     <Card.Img variant="top" src={product.image_url} style={{ minHeight: '220px', maxHeight:'220px', objectFit:'contain'}}/>
                                     <Card.Body>
-                                        <Card.Title>{product.name}</Card.Title>
+                                        <Card.Title>{product.productName}</Card.Title>
                                         <Card.Text className="mb-1">
                                         {product.description}
                                         </Card.Text>
-                                        <Card.Text className="mb-1">
-                                        price: ${product.price}
-                                        </Card.Text>
                                         <div className="mb-2">
-                                            {product.genres.map((genre)=> (
+                                            {product.productVersion.map((productVersion)=> (
                                                 
-                                                <span key={genre.id}>
-                                                    <Badge bg="secondary">{genre.genre}</Badge>
+                                                <span key={productVersion.versionName}>
+                                                    <Badge bg="secondary">{productVersion.price}</Badge>
                                                 </span>
                                             
                                             ))}
