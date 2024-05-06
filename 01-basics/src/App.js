@@ -1,56 +1,69 @@
+// CSS
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+// React Router
 import React from 'react';
-import './App.css';
-import logo from './logo.png';
-import Home from './pages/Home';
-import EditProductsForm from './pages/EditProductPage';
-import ListProductPage from './pages/ListProductPage';
-import Aboutus from './pages/Aboutus'
-import ProductContextData from './ProductContext'
-import {BrowserRouter as Router, Routes, Route, Link} from "react-router-dom";
-import "bootstrap/dist/css/bootstrap.min.css";
+import { Routes, Route } from 'react-router-dom';
+
+// Context
+import SupplierContextData from './context/supplier-context';
+import CartContextData from './context/cart-context';
+import SearchContextData from './context/search-context';
+import CloudinaryContextData from './context/cloudinary-context';
+import DashBoardContextData from './context/dashboard-context';
+import DeletionContextData from './context/delete-context';
+
+// Pages
+import ProductListing from './pages/productListing';
+import ProductDetails from './pages/productDetails';
+import ProductsBySuppliers from './pages/productsBySuppliers';
+import SupplierLogin from './pages/supplierLogin';
+import Register from './pages/register';
+import Dashboard from './pages/dashboard';
+import SearchResults from './pages/searchResults';
+import ProductDetailsForDashBoard from './pages/productDetailsForSuppliers';
+import LoginForCart from './pages/loginForCart';
+import SuccessPage from './pages/success';
+
+// Components
+import NavBar from './components/navbar';
+import Footer from './components/footer';
+import UpdateProductForm from './components/updateProduct';
 
 function App() {
-  return (  
-    <Router>
-      <nav className="navbar navbar-expand-lg bg-body-tertiary">
-      <div className="container-fluid"> 
-      <Link className="navbar-brand" to="/">BizBuddies
-      <img src={logo} alt="Logo" className="logo"/></Link> 
-      <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span className="navbar-toggler-icon"></span>
-      </button>
-    <div className="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-        <li className="nav-item">
-          <Link className="nav-link active" aria-current="page" to="#">Login</Link>
-        </li>
-        <li className="nav-item">
-          <Link className="nav-link" to="#">Contact Us</Link>
-        </li>
-        <li className="nav-item">
-          <Link className="nav-link" to="Aboutus">About Us</Link>
-        </li>
-        <li className="nav-item">
-          <Link className="nav-link" to="ListProduct">List Products</Link>
-        </li>
-      </ul>
-      </div>
-      <form className="d-flex" role="search">
-        <input className="form-control me-2" type="Search" placeholder="Product Search" aria-label="Search"/>
-        <button className="btn btn-outline-success" type="submit">Search</button>
-      </form>
-    </div>
-    </nav>
-    <ProductContextData>
-      <Routes>
-        <Route path = "/" element = {<Home/>}/>
-        <Route path = "/ListProduct" element = {<ListProductPage/>}/>
-        <Route path='/products/edit/:productId' element={<EditProductsForm/>}/>
-        <Route path='/Aboutus' element={<Aboutus/>}/>
-    </Routes>
-    </ProductContextData>
-    </Router>
-); 
+
+  return (
+    <>
+      <SupplierContextData>
+        <CloudinaryContextData>
+            <CartContextData>
+              <DashBoardContextData>
+                <SearchContextData>
+                  <DeletionContextData>
+                    <NavBar />
+                      <Routes>
+                        <Route path="/" element={<ProductListing />} />
+                        <Route path="/products/:productId" element={<ProductDetails />} />
+                        <Route path="/products/suppliers/:supplierId" element={<ProductsBySuppliers />} />
+                        <Route path="/suppliers/login" element={<SupplierLogin />} />
+                        <Route path="/suppliers/login/addCart" element={<LoginForCart />} />
+                        <Route path="/suppliers/register" element={<Register />} />
+                        <Route path="/suppliers/dashboard/:supplierId" element={<Dashboard />} />
+                        <Route path="/search-results" element={<SearchResults />} />
+                        <Route path="/suppliers/:productId/products/" element={<ProductDetailsForDashBoard />} />
+                        <Route path="/suppliers/:productId/update" element={<UpdateProductForm />} />
+                        <Route path="/paymentsuccess" element={<SuccessPage />} />
+                      </Routes>
+                    <Footer />
+                  </DeletionContextData>
+                </SearchContextData>
+              </DashBoardContextData>
+            </CartContextData>            
+        </CloudinaryContextData>
+      </SupplierContextData>
+    </>
+  );
 }
+
 
 export default App;
