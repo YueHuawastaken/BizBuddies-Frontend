@@ -15,7 +15,7 @@ import Offcanvas from 'react-bootstrap/Offcanvas';
 
 export default function NavBar(){
 
-    const {supplierId, setSupplierId} = useContext(SupplierContext);
+    const {supplier_id, setSupplier_Id} = useContext(SupplierContext);
     const {setSearchData} = useContext(SearchContext);
 
     const [productName, setProductName] = useState();
@@ -38,11 +38,11 @@ export default function NavBar(){
                 await APIHandler.get('/suppliers/check-login');
                 console.log('jwt still in play')
 
-                if (localStorage.getItem('supplierId')){
-                    setSupplierId(localStorage.getItem('supplierId'))
+                if (localStorage.getItem('supplier_id')){
+                    setSupplier_Id(localStorage.getItem('supplier_id'))
                 }
     
-                navigate(`/suppliers/dashboard/${supplierId}`);
+                navigate(`/suppliers/dashboard/${supplier_id}`);
 
             } catch (error){
                 console.log('login again')

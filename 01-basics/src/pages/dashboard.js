@@ -17,7 +17,7 @@ import { DashBoardContext } from "../context/dashboard-context";
 
 export default function Dashboard (){
 
-    const {supplierId, setSupplierId, phoneNumber, setPhoneNumber} = useContext(SupplierContext);
+    const {supplier_id, setSupplier_Id, phoneNumber, setPhoneNumber, studioShopName, setStudioShopName} = useContext(SupplierContext);
     const {reRender} = useContext(DashBoardContext);
 
     const [productsData, setProductsData] = useState();
@@ -52,12 +52,14 @@ export default function Dashboard (){
     const retrieveSupplierProducts = async () => {
 
         try {
-            let response = await APIHandler.get(`/suppliers/dashboard/${supplierId}`);
+            console.log("retrieveSupplierProducts")
+            let response = await APIHandler.get(`/suppliers/dashboard/${supplier_id}`);
     
             console.log('retrieving products by supplier', response.data);
                   
             return response.data.products;
         } catch (error) {
+            console.log(error);
             setErrorNotification('Products not found');
         }
     }
@@ -75,13 +77,13 @@ export default function Dashboard (){
         headersData = {}
         APIHandler.defaults.headers.common['Authorization'] = null;
         localStorage.removeItem("accessToken");
-        localStorage.removeItem("supplierId");
+        localStorage.removeItem("supplier_id");
         navigate('/')
         console.log('Supplier has logged out');
     }
 
     useEffect(() => {
-        console.log('useEffect hit', supplierId, phoneNumber);
+        console.log('useEffect hit', supplier_id, phoneNumber);
 
         if (localStorage.getItem('accessToken')){
 
@@ -90,15 +92,17 @@ export default function Dashboard (){
             try {
 
                 reAuth();
-                if (localStorage.getItem("supplierId") && localStorage.getItem("phoneNumber")){
-                    setSupplierId(localStorage.getItem("supplierId"));
+                console.log("reAuth")
+                if (localStorage.getItem("supplier_id") && localStorage.getItem("phoneNumber")){
+                    setSupplier_Id(localStorage.getItem("supplier_id"));
                     setPhoneNumber(localStorage.getItem("phoneNumber"));
+                    setStudioShopName(localStorage.getItem("studioShopName"));
                 }
 
-                if (supplierId && phoneNumber){
+                if (supplier_id && phoneNumber){
                   phoneNumberRef.current = phoneNumber;
-                  supplierIdRef.current = supplierId;
-            
+                  supplierIdRef.current = supplier_id;
+                    console.log("Hello");
                     retrieveSupplierProducts().then((data)=>{
                         console.log('Received data from promise', data);
                         setProductsData(data);
@@ -115,7 +119,7 @@ export default function Dashboard (){
             navigate('/suppliers/login');
         }
     },
-    [supplierId, phoneNumber, reRender])
+    [supplier_id, phoneNumber, reRender])
 
     return (
         <>
@@ -123,7 +127,7 @@ export default function Dashboard (){
             <div style={{display:"flex", justifyContent:"space-between", alignContent:"center"}}>
                 <span>
                     <Button variant="dark" className="ms-3 mb-2" onClick={handleGoBack}> Back </Button>
-                    <span className="mt-2 ms-4">Welcome: <span style={{color:'slateblue'}}> {supplierId? supplierId : supplierIdRef.current} </span></span>
+                    <span className="mt-2 ms-4">Welcome: <span style={{color:'slateblue'}}> {studioShopName? studioShopName : "Gk Official"} </span></span>
                 </span>
                 <span>
                 <Button variant="secondary" className="btn-sm me-4 mt-1" onClick={handleLogout}> Logout</Button>
@@ -148,20 +152,6 @@ export default function Dashboard (){
                             <Button className="ms-3 mt-1 btn-sm" 
                                     variant="light" 
                                     style={{border:'1px solid black'}}
-                                    value="viewCart"
-                                    onClick={(event)=>handleToggleButton(event)}
-                            > View Cart </Button>                   
-                            
-                            <Button className="ms-3 mt-1 btn-sm" 
-                                    variant="light" 
-                                    style={{border:'1px solid black'}}
-                                    value="viewOrders"
-                                    onClick={(event)=>handleToggleButton(event)}
-                            > View Orders </Button>
-
-                            <Button className="ms-3 mt-1 btn-sm" 
-                                    variant="light" 
-                                    style={{border:'1px solid black'}}
                                     onClick={()=>handleShowProductButton()}
                             > View Your Works </Button>
                         </Col>
@@ -172,28 +162,6 @@ export default function Dashboard (){
                     (
                         <Container fluid className="ms-3">
                             <AddProductForm />
-                        </Container>
-                    ): (
-                        <Container fluid className="ms-3">
-                        </Container>
-                    )
-                }
-                {
-                    showItem === "viewCart"?
-                    (
-                        <Container fluid className="ms-3">
-                            <Cart />
-                        </Container>
-                    ): (
-                        <Container fluid className="ms-3">
-                        </Container>
-                    )
-                }
-                {
-                    showItem === "viewOrders"?
-                    (   
-                        <Container fluid className="ms-3">
-                            <CustomerOrders />
                         </Container>
                     ): (
                         <Container fluid className="ms-3">

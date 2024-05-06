@@ -13,19 +13,19 @@ import { DashBoardContext } from '../context/dashboard-context';
 export default function DeleteConfirmation () {
 
     const {idOfProductForDeletion, setIdOfProductForDeletion} = useContext(DeletionContext);
-    const {supplierId, setsupplierId} = useContext(SupplierContext);
+    const {supplier_id, setSupplier_Id} = useContext(SupplierContext);
     const {reRender, setReRender} = useContext(DashBoardContext);
     
     useEffect(()=>{
-        if (localStorage.getItem('supplierId')){
-            setsupplierId(localStorage.getItem('supplierId'));
+        if (localStorage.getItem('supplier_id')){
+            setSupplier_Id(localStorage.getItem('supplier_id'));
         }
     }, [])
 
     const navigate = useNavigate();
 
     const navigateToDashBoard = () => {
-        navigate(`/suppliers/dashboard/${supplierId}`)
+        navigate(`/suppliers/dashboard/${supplier_id}`)
     }
 
     const handleNoButton = () => {
@@ -34,11 +34,11 @@ export default function DeleteConfirmation () {
 
     const handleDeleteConfirmationButton = () => {
         try {
-            APIHandler.post(`/suppliers/${idOfProductForDeletion}/delete?supplierId=${supplierId}`);
+            APIHandler.post(`/suppliers/${idOfProductForDeletion}/delete?supplier_id=${supplier_id}`);
             setIdOfProductForDeletion('')
             console.log('product deleted');
             setReRender(!reRender);
-            navigateToDashBoard(supplierId);
+            navigateToDashBoard(supplier_id);
 
         } catch (error) {
             console.log('failed to delete product', error)

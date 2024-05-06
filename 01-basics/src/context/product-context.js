@@ -8,7 +8,7 @@ const ProductContextData = ({children}) => {
     const [description, setDescription] = useState('');
     const [versionName, setVersionName] = useState('');
     const [price, setPrice] = useState('');
-    const [supplierId, setSupplierId] = useState('');
+    const [supplier_id, setSupplier_Id] = useState('');
     const [image_url, setImage_Url] = useState('');
     const [dateCreated, setDateCreated] = useState('');
 
@@ -18,7 +18,7 @@ const ProductContextData = ({children}) => {
             description, setDescription,
             versionName, setVersionName,
             price, setPrice,
-            supplierId, setSupplierId,
+            supplier_id, setSupplier_Id,
             image_url, setImage_Url,
             dateCreated, setDateCreated          
         })
@@ -27,7 +27,7 @@ const ProductContextData = ({children}) => {
             description, setDescription,
             versionName, setVersionName,
             price, setPrice,
-            supplierId, setSupplierId,
+            supplier_id, setSupplier_Id,
             image_url, setImage_Url,
             dateCreated, setDateCreated,          
         ]

@@ -14,11 +14,11 @@ export default function SupplierLogin (){
 
     // context
     const {setStudioShopName} = useContext(SupplierContext);
-    const {setSupplierId} = useContext(SupplierContext);
+    const {setSupplier_Id} = useContext(SupplierContext);
     const {setLoginState} = useContext(SupplierContext);
-
+    const {setPhoneNumber} = useContext(SupplierContext)
     // state
-    const [phoneNumber, setPhoneNumber] = useState('');
+    const [phoneNumberForm, setPhoneNumberForm] = useState('');
     const [password, setPassword] = useState('');
 
     const [errorNotification, setErrorNotification] = useState('');
@@ -33,7 +33,7 @@ export default function SupplierLogin (){
     // Data
     const handleLoginPhoneNumber = (event) => {
         setErrorNotification('');
-        setPhoneNumber(event.target.value);
+        setPhoneNumberForm(event.target.value);
     }
 
     const handlePassword = (event) => {
@@ -41,8 +41,8 @@ export default function SupplierLogin (){
         setPassword(event.target.value);
     }
 
-    const navigateToDashBoard = (supplierId) => {
-        navigate(`/suppliers/dashboard/${supplierId}`)
+    const navigateToDashBoard = (supplier_id) => {
+        navigate(`/suppliers/dashboard/${supplier_id}`)
     }
 
     const handleSubmit = async (event) => {
@@ -52,16 +52,16 @@ export default function SupplierLogin (){
         const phoneNumberRegexPattern =  /^\+\d{7,13}$|^\d{8,14}$/;
         const passwordRegexPattern = /^[a-zA-Z0-9._%+\-!@#$&*()]*$/i;
 
-        if (phoneNumber === "" && password ===""){
+        if (phoneNumberForm === "" && password ===""){
             setErrorNotification('Fields cannot empty')
         }
-        else if (phoneNumber === ""){
+        else if (phoneNumberForm === ""){
             setErrorNotification('Phone Number cannot be empty')
         }
         else if (password === ""){
             setErrorNotification('password cannot be empty')
         }
-        else if (!phoneNumberRegexPattern.test(phoneNumber)){
+        else if (!phoneNumberRegexPattern.test(phoneNumberForm)){
             setErrorNotification('invalid email characters or format')
         }
         else if (!passwordRegexPattern.test(password)){
@@ -75,27 +75,32 @@ export default function SupplierLogin (){
                 console.log('try route hit in login handle submit')
 
                 let loginResponse = await APIHandler.post('/suppliers/login', {
-                    "phoneNumber": phoneNumber,
+                    "phoneNumber": phoneNumberForm,
                     "password": password,
                 })
-
+                console.log(loginResponse.data)
                 let accessToken = await loginResponse.data.accessToken
                 let refreshToken = await loginResponse.data.refreshToken
                 
                 let ID = await loginResponse.data.supplier_id
                 let studioShopName = await loginResponse.data.studioShopName
+                let phoneNumber = await loginResponse.data.phoneNumber
 
                 console.log('access token react =>', accessToken)
                 console.log('refresh token react =>', refreshToken)
 
                 setAuthHeader(accessToken, refreshToken)
                 setLoginState(true);
+                console.log(ID);
+                console.log(studioShopName);
 
-                await setSupplierId(ID)
+                await setSupplier_Id(ID)
                 await setStudioShopName(studioShopName)
+                await setPhoneNumber (phoneNumber)
 
-                localStorage.setItem("supplierId", ID)
+                localStorage.setItem("supplier_id", ID)
                 localStorage.setItem("studioShopName", studioShopName)
+                localStorage.setItem("phoneNumber", phoneNumber)
 
                 if (ID){
                     navigateToDashBoard(ID);
@@ -119,7 +124,7 @@ export default function SupplierLogin (){
                                 <Form.Control   type="text" 
                                                 placeholder="Enter Phone Number"
                                                 name="phoneNumber"
-                                                value={phoneNumber}
+                                                value={phoneNumberForm}
                                                 onChange={(event) => handleLoginPhoneNumber(event)}
                                 />
                             </Form.Group>                    

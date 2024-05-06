@@ -17,7 +17,7 @@ export default function UploadWidget(){
         
         cloudinaryRef.current = window.cloudinary;
         setNotification('');
-        console.log("windoe here", window);
+        console.log("window here", window);
 
         console.log('cloudname Ref here', cloudinaryNameRef);
         console.log('cloudpreset ref here', cloudinaryUploadPresetRef);    
@@ -30,6 +30,7 @@ export default function UploadWidget(){
            if (!error && result.event === 'success'){
                 
                 console.log('cloudinary is working');
+                console.log(result.info)
                 const cloudinaryImageUrl = result.info.url;
                 console.log("cloudinaryImageUrl=>", cloudinaryImageUrl);
 

@@ -17,7 +17,7 @@ export default function ProductDetailsForDashBoard () {
 
     const [singleProductData, setSingleProductData] = useState();
     
-    const {supplierId, setSupplierId} = useContext(SupplierContext);
+    const {supplier_id, setSupplier_Id} = useContext(SupplierContext);
     const {idOfProductForDeletion, setIdOfProductForDeletion} = useContext(DeletionContext);
 
     const {productId} = useParams();
@@ -29,11 +29,11 @@ export default function ProductDetailsForDashBoard () {
         navigate(-1);   
     }
 
-    const supplierIdRef = useRef(supplierId);
+    const supplierIdRef = useRef(supplier_id);
 
     const retrieveProductById = async (productId) => {
         try{
-            let response = await APIHandler.get(`/suppliers/${productId}/products?supplierId=${supplierId || supplierIdRef.current}`);
+            let response = await APIHandler.get(`/suppliers/${productId}/products?supplier_id=${supplier_id || supplierIdRef.current}`);
             console.log('retrieving single product', response.data.product);
             setSingleProductData(response.data.product)
         } catch (error) {
@@ -42,8 +42,8 @@ export default function ProductDetailsForDashBoard () {
     }
 
     useEffect(() => {
-        if (localStorage.getItem('supplierId')){
-            setSupplierId(localStorage.getItem('supplierId'))
+        if (localStorage.getItem('supplier_id')){
+            setSupplier_Id(localStorage.getItem('supplier_id'))
         }
         retrieveProductById(productId)}
     ,[])

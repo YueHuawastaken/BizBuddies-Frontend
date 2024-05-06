@@ -22,7 +22,7 @@ export default function UpdateProductForm(){
     const [versionName, setVersionName] = useState('');
     const [price, setPrice] = useState('');
 
-    const {supplierId, setSupplierId} = useContext(SupplierContext);
+    const {supplier_id, setSupplier_Id} = useContext(SupplierContext);
     const {image_url, setImage_Url, imageUploaded, setImageUploaded} = useContext(CloudinaryContext);
     const {reRender, setReRender} = useContext(DashBoardContext);
 
@@ -31,7 +31,7 @@ export default function UpdateProductForm(){
     const [errorNotification, setErrorNotification] = useState('');
     const [successNotification, setSuccessNotification] = useState('');
 
-    const supplierIdRef = useRef(supplierId);
+    const supplierIdRef = useRef(supplier_id);
 
     const {productId} = useParams();
 
@@ -45,10 +45,10 @@ export default function UpdateProductForm(){
 
     const retrieveProductById = async (productId) => {
         try{
-            console.log('frontend retrieve product by id hit, supplierId here=>', supplierId)
+            console.log('frontend retrieve product by id hit, supplier_id here=>', supplier_id)
             console.log('frontend product params', productId);
 
-            let response = await APIHandler.get(`/suppliers/update/${productId}?supplierId=${supplierId || supplierIdRef.current}`);
+            let response = await APIHandler.get(`/suppliers/update/${productId}?supplier_id=${supplier_id || supplierIdRef.current}`);
             console.log('retrieving single product', response.data.product);
 
             setSingleProductData(response.data.products);
@@ -69,8 +69,8 @@ export default function UpdateProductForm(){
     }
 
     useEffect(()=>{
-        if (localStorage.getItem('supplierId')){
-            setSupplierId(localStorage.getItem('supplierId'))
+        if (localStorage.getItem('supplier_id')){
+            setSupplier_Id(localStorage.getItem('supplier_id'))
         }
         retrieveProductById(productId)
         .catch((error)=>{console.log('fail to set data', error)})
@@ -116,13 +116,13 @@ export default function UpdateProductForm(){
                 "versionName": versionName,
                 "price": price,
                 "image_url": image_url,
-                "supplierId": supplierId
+                "supplier_id": supplier_id
             }
 
             try {
                 console.log("frontend supplierIdref here", supplierIdRef.current)
                 console.log("frontend payload here", payload);
-                await APIHandler.post(`/suppliers/${productId}/update?supplierId=${supplierIdRef.current}`, payload);
+                await APIHandler.post(`/suppliers/${productId}/update?supplier_id=${supplierIdRef.current}`, payload);
                 
                 console.log('product updated')
                 setSuccessNotification("Product Updated");
@@ -179,46 +179,6 @@ export default function UpdateProductForm(){
                     <Form.Label style={{fontSize:"12px"}}>Price</Form.Label>
                         <Form.Control   type="text"
                                         placeholder="Enter price"
-                                        style={{fontSize:"12px"}}
-                                        name="price"
-                                        value={price}
-                                        onChange={(event)=>setPrice(event.target.value)}
-                        />
-                    </Form.Group> 
-                    <Form.Group className="mb-3" style={{maxWidth: '350px', minWidth:'350px', maxHeight:'60px'}}>
-                        <Form.Label style={{fontSize:"12px"}}>Version Name</Form.Label>
-                        <Form.Control   type="text" 
-                                        style={{fontSize:"12px"}}
-                                        placeholder="Enter product version"
-                                        name="versionName"
-                                        value={versionName}
-                                        onChange={(event)=> setVersionName(event.target.value)}
-                        />
-                    </Form.Group>
-                    <Form.Group className="mb-3" style={{maxWidth: '350px', minWidth:'350px', maxHeight:'60px'}}>
-                    <Form.Label style={{fontSize:"12px"}}>Price</Form.Label>
-                        <Form.Control   type="text"
-                                        placeholder="Enter NIL if there is only one version"
-                                        style={{fontSize:"12px"}}
-                                        name="price"
-                                        value={price}
-                                        onChange={(event)=>setPrice(event.target.value)}
-                        />
-                    </Form.Group> 
-                    <Form.Group className="mb-3" style={{maxWidth: '350px', minWidth:'350px', maxHeight:'60px'}}>
-                        <Form.Label style={{fontSize:"12px"}}>Version Name</Form.Label>
-                        <Form.Control   type="text" 
-                                        style={{fontSize:"12px"}}
-                                        placeholder="Enter product version"
-                                        name="versionName"
-                                        value={versionName}
-                                        onChange={(event)=> setVersionName(event.target.value)}
-                        />
-                    </Form.Group>
-                    <Form.Group className="mb-3" style={{maxWidth: '350px', minWidth:'350px', maxHeight:'60px'}}>
-                        <Form.Label style={{fontSize:"12px"}}>Price</Form.Label>
-                        <Form.Control   type="text"
-                                        placeholder="Enter NIL if there is only one version"
                                         style={{fontSize:"12px"}}
                                         name="price"
                                         value={price}

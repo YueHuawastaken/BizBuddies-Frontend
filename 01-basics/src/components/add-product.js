@@ -21,7 +21,7 @@ export default function AddProductForm(){
     const [versionName, setVersionName] = useState('');
     const [price, setPrice] = useState('');
 
-    const {supplierId, setSupplierId} = useContext(SupplierContext);
+    const {supplier_id, setSupplier_Id} = useContext(SupplierContext);
     const {image_url} = useContext(CloudinaryContext);
 
     const [errorNotification, setErrorNotification] = useState('');
@@ -31,18 +31,18 @@ export default function AddProductForm(){
     const {setShowItem} = useContext(DashBoardContext);
     const {setShowProducts} = useContext(DashBoardContext);
 
-    const supplierIdRef = useRef(supplierId);
+    const supplierIdRef = useRef(supplier_id);
 
     useEffect(()=>{
-        if (localStorage.getItem('supplierId')){
-            setSupplierId(localStorage.getItem('supplierId'))
+        if (localStorage.getItem('supplier_id')){
+            setSupplier_Id(localStorage.getItem('supplier_id'))
         }
     },[])
 
     const navigate = useNavigate();
     
     const navigateToDashBoard = () => {
-        navigate(`/suppliers/dashboard/${supplierId}`)
+        navigate(`/suppliers/dashboard/${supplier_id}`)
     }
 
     const handleSubmit = async (event) => {
@@ -83,7 +83,7 @@ export default function AddProductForm(){
                 "versionName": versionName,
                 "price": price,
                 "image_url": image_url,
-                "supplierId": supplierId
+                "supplier_id": supplier_id
             }
 
             try {
@@ -96,7 +96,7 @@ export default function AddProductForm(){
                     setShowItem('');
                     setShowProducts(true);
                     setReRender(!reRender);
-                    navigateToDashBoard(supplierId)
+                    navigateToDashBoard(supplier_id)
                 },1000);
 
             } catch (error) {
@@ -145,46 +145,6 @@ export default function AddProductForm(){
                     <Form.Label style={{fontSize:"12px"}}>Price</Form.Label>
                         <Form.Control   type="text"
                                         placeholder="Enter price"
-                                        style={{fontSize:"12px"}}
-                                        name="price"
-                                        value={price}
-                                        onChange={(event)=>setPrice(event.target.value)}
-                        />
-                    </Form.Group> 
-                    <Form.Group className="mb-3" style={{maxWidth: '350px', minWidth:'350px', maxHeight:'60px'}}>
-                        <Form.Label style={{fontSize:"12px"}}>Version Name</Form.Label>
-                        <Form.Control   type="text" 
-                                        style={{fontSize:"12px"}}
-                                        placeholder="Enter product version"
-                                        name="versionName"
-                                        value={versionName}
-                                        onChange={(event)=> setVersionName(event.target.value)}
-                        />
-                    </Form.Group>
-                    <Form.Group className="mb-3" style={{maxWidth: '350px', minWidth:'350px', maxHeight:'60px'}}>
-                    <Form.Label style={{fontSize:"12px"}}>Price</Form.Label>
-                        <Form.Control   type="text"
-                                        placeholder="Enter NIL if there is only one version"
-                                        style={{fontSize:"12px"}}
-                                        name="price"
-                                        value={price}
-                                        onChange={(event)=>setPrice(event.target.value)}
-                        />
-                    </Form.Group> 
-                    <Form.Group className="mb-3" style={{maxWidth: '350px', minWidth:'350px', maxHeight:'60px'}}>
-                        <Form.Label style={{fontSize:"12px"}}>Version Name</Form.Label>
-                        <Form.Control   type="text" 
-                                        style={{fontSize:"12px"}}
-                                        placeholder="Enter product version"
-                                        name="versionName"
-                                        value={versionName}
-                                        onChange={(event)=> setVersionName(event.target.value)}
-                        />
-                    </Form.Group>
-                    <Form.Group className="mb-3" style={{maxWidth: '350px', minWidth:'350px', maxHeight:'60px'}}>
-                        <Form.Label style={{fontSize:"12px"}}>Price</Form.Label>
-                        <Form.Control   type="text"
-                                        placeholder="Enter NIL if there is only one version"
                                         style={{fontSize:"12px"}}
                                         name="price"
                                         value={price}

@@ -15,7 +15,7 @@ export default function ProductsBySuppliers (){
 
     const [productsData, setProductsData] = useState();
 
-    const {supplierId} = useParams();
+    const {supplier_id} = useParams();
 
     let navigate = useNavigate();
 
@@ -25,8 +25,8 @@ export default function ProductsBySuppliers (){
 
     const retrieveSupplierProducts = async () => {
         try{
-            let response = await APIHandler.get(`/products/suppliers/${supplierId}`);
-            console.log('retrieving products by supplierId', response.data);
+            let response = await APIHandler.get(`/products/suppliers/${supplier_id}`);
+            console.log('retrieving products by supplier_id', response.data);
             return response.data.products;
         } catch(error) {
             console.error("fail to retrieve supplier products", error)
