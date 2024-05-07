@@ -7,17 +7,16 @@ import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 
-import AddProductForm from "../components/add-product";
 import Cart from "../components/carts";
 import CustomerOrders from "../components/customer-orders";
 
 import { Link, useNavigate } from 'react-router-dom';
-import { SupplierContext } from "../context/supplier-context";
+import { CustomerContext } from "../context/customer-context";
 import { DashBoardContext } from "../context/dashboard-context";
 
 export default function Dashboard (){
 
-    const {supplier_id, setSupplier_Id, phoneNumber, setPhoneNumber, studioShopName, setStudioShopName} = useContext(SupplierContext);
+    const {customer_id, setCustomer_Id, userName, setUserName} = useContext(CustomerContext);
     const {reRender} = useContext(DashBoardContext);
 
     const [productsData, setProductsData] = useState();
@@ -27,8 +26,8 @@ export default function Dashboard (){
     
     let navigate = useNavigate();
 
-    const phoneNumberRef = useRef();
-    const supplierIdRef = useRef();
+    const userNameRef = useRef();
+    const customerIdRef = useRef();
 
     const handleToggleButton = (event) => {
         if (showItem === event.target.value) {
@@ -49,17 +48,15 @@ export default function Dashboard (){
         navigate(-1);   
     }
 
-    const retrieveSupplierProducts = async () => {
+    const retrieveCustomerProducts = async () => {
 
         try {
-            console.log("retrieveSupplierProducts")
-            let response = await APIHandler.get(`/suppliers/dashboard/${supplier_id}`);
+            let response = await APIHandler.get(`/customers/dashboard/${customer_id}`);
     
-            console.log('retrieving products by supplier', response.data);
+            console.log('retrieving products by customers', response.data);
                   
             return response.data.products;
         } catch (error) {
-            console.log(error);
             setErrorNotification('Products not found');
         }
     }
@@ -69,7 +66,7 @@ export default function Dashboard (){
         headersData["Authorization"] = `Bearer ${accessToken}`
         APIHandler.defaults.headers.common["Authorization"] = headersData["Authorization"]
 
-        await APIHandler.get('/suppliers/check-login');
+        await APIHandler.get('/customers/check-login');
         console.log('jwt still in play')
     }
 
@@ -77,13 +74,13 @@ export default function Dashboard (){
         headersData = {}
         APIHandler.defaults.headers.common['Authorization'] = null;
         localStorage.removeItem("accessToken");
-        localStorage.removeItem("supplier_id");
+        localStorage.removeItem("customer_id");
         navigate('/')
-        console.log('Supplier has logged out');
+        console.log('Customer has logged out');
     }
 
     useEffect(() => {
-        console.log('useEffect hit', supplier_id, phoneNumber);
+        console.log('useEffect hit', customer_id, userName);
 
         if (localStorage.getItem('accessToken')){
 
@@ -92,18 +89,16 @@ export default function Dashboard (){
             try {
 
                 reAuth();
-                console.log("reAuth")
-                if (localStorage.getItem("supplier_id") && localStorage.getItem("phoneNumber")){
-                    setSupplier_Id(localStorage.getItem("supplier_id"));
-                    setPhoneNumber(localStorage.getItem("phoneNumber"));
-                    setStudioShopName(localStorage.getItem("studioShopName"));
+                if (localStorage.getItem("customer_id") && localStorage.getItem("userName")){
+                    setCustomer_Id(localStorage.getItem("customer_id"));
+                    setUserName(localStorage.getItem("userName"));
                 }
 
-                if (supplier_id && phoneNumber){
-                  phoneNumberRef.current = phoneNumber;
-                  supplierIdRef.current = supplier_id;
-                    console.log("Hello");
-                    retrieveSupplierProducts().then((data)=>{
+                if (customer_id && userName){
+                    userNameRef.current = userName;
+                    customerIdRef.current = customer_id;
+            
+                    retrieveCustomerProducts().then((data)=>{
                         console.log('Received data from promise', data);
                         setProductsData(data);
                         if (!productsData){
@@ -113,13 +108,13 @@ export default function Dashboard (){
                 }
             } catch (error) {
                 console.log('login again')
-                navigate('/suppliers/login');
+                navigate('/customers/login');
             }
         } else {
-            navigate('/suppliers/login');
+            navigate('/customers/login');
         }
     },
-    [supplier_id, phoneNumber, reRender])
+    [customer_id, userName, reRender])
 
     return (
         <>
@@ -127,7 +122,7 @@ export default function Dashboard (){
             <div style={{display:"flex", justifyContent:"space-between", alignContent:"center"}}>
                 <span>
                     <Button variant="dark" className="ms-3 mb-2" onClick={handleGoBack}> Back </Button>
-                    <span className="mt-2 ms-4">Welcome: <span style={{color:'slateblue'}}> {studioShopName? studioShopName : "Gk Official"} </span></span>
+                    <span className="mt-2 ms-4">Welcome: <span style={{color:'slateblue'}}> {userName? userName : userNameRef.current} </span></span>
                 </span>
                 <span>
                 <Button variant="secondary" className="btn-sm me-4 mt-1" onClick={handleLogout}> Logout</Button>
@@ -142,63 +137,45 @@ export default function Dashboard (){
                             <span className="ms-4" style={{color:'black', fontWeight:'600', fontSize:'20px'}}>Tools</span>
                         </Col>
                         <Col style={{justifyContent:'flex-start'}}>
-                            <Button className="ms-3 mt-1 btn-sm" 
-                                    variant="light" 
-                                    style={{border:'1px solid black'}}
-                                    value="addProduct"
-                                    onClick={(event)=>handleToggleButton(event)}
-                            > List a Work </Button>
 
                             <Button className="ms-3 mt-1 btn-sm" 
                                     variant="light" 
                                     style={{border:'1px solid black'}}
-                                    onClick={()=>handleShowProductButton()}
-                            > View Your Works </Button>
+                                    value="viewCart"
+                                    onClick={(event)=>handleToggleButton(event)}
+                            > View Cart </Button>                   
+                            
+                            <Button className="ms-3 mt-1 btn-sm" 
+                                    variant="light" 
+                                    style={{border:'1px solid black'}}
+                                    value="viewOrders"
+                                    onClick={(event)=>handleToggleButton(event)}
+                            > View Orders </Button>
                         </Col>
                     </Row>
                 </Container>
                 {
-                    showItem === "addProduct"?
+                    showItem === "viewCart"?
                     (
                         <Container fluid className="ms-3">
-                            <AddProductForm />
+                            <Cart />
                         </Container>
                     ): (
                         <Container fluid className="ms-3">
                         </Container>
                     )
                 }
-            <div className="ms-3 mt-3 mb-3" style={{width:'96%', borderBottom:"1px solid black"}}> </div>
-
-            <Card className="ms-3" style={{width:'96%', display: showProducts? 'block': 'none'}} id="products-overview">
-                <Card.Header as="h5" style={{backgroundColor:'white'}}>Manage Your Works</Card.Header>
-                    <Card.Body className="mb-0 pb-0">
-                        {productsData?
-                            (<Container fluid className="mt-2 mb-5 pb-0">
-                                <Row xs={1} s={2} md={2} lg={3} xl={4} xxl={5} style={{justifyContent:'flex-start'}}>
-                                    {productsData.map(product => 
-                                        <Col style={{marginLeft:'0px'}}>
-                                            <Card style={{ width: '18rem', marginTop: '10px', marginBottom:'20px'}}>
-                                            <Card.Img variant="top" src={product.image_url} style={{ minHeight: '220px', maxHeight:'220px', objectFit:'contain'}}/>
-                                            <Card.Body>
-                                                <Card.Title>{product.productName}</Card.Title>
-                                                <Card.Text>
-                                                {product.description}
-                                                </Card.Text>
-                                                    <Link to={`/suppliers/${product.id}/products`} >
-                                                        <Button variant="dark" className="btn-sm"> Details </Button>
-                                                    </Link>
-                                            </Card.Body>
-                                            </Card>             
-                                        </Col>
-                                    )}
-                                </Row>
-                            </Container>
-                        ) : (<div className="ms-1 mt-3 mb-4" style={{color:'gray'}}> {errorNotification} </div>)
-                        }
-                    </Card.Body>
-                </Card>
+                {
+                    showItem === "viewOrders"?
+                    (   
+                        <Container fluid className="ms-3">
+                            <customerOrders />
+                        </Container>
+                    ): (
+                        <Container fluid className="ms-3">
+                        </Container>
+                    )
+                }
         </>
     )
 }
- 

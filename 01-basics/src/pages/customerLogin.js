@@ -5,20 +5,20 @@ import Container from 'react-bootstrap/esm/Container';
 import Row from 'react-bootstrap/esm/Row';
 import Col from 'react-bootstrap/esm/Col';
 
-import { SupplierContext } from '../context/supplier-context';
+import { CustomerContext } from '../context/customer-context';
 import { Link, useNavigate } from 'react-router-dom';
 
 import APIHandler, { setAuthHeader } from '../api/apiHandler';
 
-export default function SupplierLogin (){
+export default function CustomerLogin (){
 
     // context
-    const {setStudioShopName} = useContext(SupplierContext);
-    const {setSupplier_Id} = useContext(SupplierContext);
-    const {setLoginState} = useContext(SupplierContext);
-    const {setPhoneNumber} = useContext(SupplierContext)
+    const {setUserName} = useContext(CustomerContext);
+    const {setCustomer_Id} = useContext(CustomerContext);
+    const {setLoginState} = useContext(CustomerContext);
+
     // state
-    const [phoneNumberForm, setPhoneNumberForm] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     const [errorNotification, setErrorNotification] = useState('');
@@ -31,9 +31,9 @@ export default function SupplierLogin (){
     }
 
     // Data
-    const handleLoginPhoneNumber = (event) => {
+    const handleLoginEmail = (event) => {
         setErrorNotification('');
-        setPhoneNumberForm(event.target.value);
+        setEmail(event.target.value);
     }
 
     const handlePassword = (event) => {
@@ -41,27 +41,27 @@ export default function SupplierLogin (){
         setPassword(event.target.value);
     }
 
-    const navigateToDashBoard = (supplier_id) => {
-        navigate(`/suppliers/dashboard/${supplier_id}`)
+    const navigateToDashBoard = (customer_id) => {
+        navigate(`/customers/dashboard/${customer_id}`)
     }
 
     const handleSubmit = async (event) => {
 
         event.preventDefault();
 
-        const phoneNumberRegexPattern =  /^\+\d{7,13}$|^\d{8,14}$/;
+        const emailRegexPattern = /^[a-zA-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
         const passwordRegexPattern = /^[a-zA-Z0-9._%+\-!@#$&*()]*$/i;
 
-        if (phoneNumberForm === "" && password ===""){
+        if (email === "" && password ===""){
             setErrorNotification('Fields cannot empty')
         }
-        else if (phoneNumberForm === ""){
-            setErrorNotification('Phone Number cannot be empty')
+        else if (email === ""){
+            setErrorNotification('Email cannot be empty')
         }
         else if (password === ""){
             setErrorNotification('password cannot be empty')
         }
-        else if (!phoneNumberRegexPattern.test(phoneNumberForm)){
+        else if (!emailRegexPattern.test(email)){
             setErrorNotification('invalid email characters or format')
         }
         else if (!passwordRegexPattern.test(password)){
@@ -74,33 +74,28 @@ export default function SupplierLogin (){
             try {
                 console.log('try route hit in login handle submit')
 
-                let loginResponse = await APIHandler.post('/suppliers/login', {
-                    "phoneNumber": phoneNumberForm,
+                let loginResponse = await APIHandler.post('/customers/login', {
+                    "email": email,
                     "password": password,
                 })
-                console.log(loginResponse.data)
+
                 let accessToken = await loginResponse.data.accessToken
                 let refreshToken = await loginResponse.data.refreshToken
                 
-                let ID = await loginResponse.data.supplier_id
-                let studioShopName = await loginResponse.data.studioShopName
-                let phoneNumber = await loginResponse.data.phoneNumber
+                let ID = await loginResponse.data.customer_id
+                let Username = await loginResponse.data.userName
 
                 console.log('access token react =>', accessToken)
                 console.log('refresh token react =>', refreshToken)
 
                 setAuthHeader(accessToken, refreshToken)
                 setLoginState(true);
-                console.log(ID);
-                console.log(studioShopName);
 
-                await setSupplier_Id(ID)
-                await setStudioShopName(studioShopName)
-                await setPhoneNumber (phoneNumber)
+                await setCustomer_Id(ID)
+                await setUserName(Username)
 
-                localStorage.setItem("supplier_id", ID)
-                localStorage.setItem("studioShopName", studioShopName)
-                localStorage.setItem("phoneNumber", phoneNumber)
+                localStorage.setItem("customer_id", ID)
+                localStorage.setItem("userName", Username)
 
                 if (ID){
                     navigateToDashBoard(ID);
@@ -119,13 +114,13 @@ export default function SupplierLogin (){
                     <Col>
                         <Button variant="secondary" className="ms-4 mt-2 mb-3" onClick={handleGoBack}> Back </Button>
                         <Form onSubmit={handleSubmit}>
-                            <Form.Group className="ms-4 mb-3"  style={{maxWidth: '350px', minWidth:'350px'}}>
-                                <Form.Label>Phone Number</Form.Label>
-                                <Form.Control   type="text" 
-                                                placeholder="Enter Phone Number"
-                                                name="phoneNumber"
-                                                value={phoneNumberForm}
-                                                onChange={(event) => handleLoginPhoneNumber(event)}
+                            <Form.Group className="ms-4 mb-3" controlId="formBasicEmail" style={{maxWidth: '350px', minWidth:'350px'}}>
+                                <Form.Label>Email address</Form.Label>
+                                <Form.Control   type="email" 
+                                                placeholder="Enter email"
+                                                name="email"
+                                                value={email}
+                                                onChange={(event) => handleLoginEmail(event)}
                                 />
                             </Form.Group>                    
                             <Form.Group className="ms-4 mb-3" controlId="formBasicPassword" style={{maxWidth: '350px', minWidth:'300px'}}>
@@ -139,7 +134,7 @@ export default function SupplierLogin (){
                             </Form.Group>
                             <Form.Group className="ms-4 mb-3">
                                 <Form.Text className="text-muted">
-                                    First time here? <Link to={"/suppliers/register"}> Register As Supplier</Link>
+                                    First time here? <Link to={"/customers/register"}> Register As Customer</Link>
                                 </Form.Text>
                             </Form.Group>
                             
