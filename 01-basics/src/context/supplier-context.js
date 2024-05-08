@@ -1,4 +1,5 @@
 import { createContext, useState, useEffect } from "react";
+import { setAuthHeader } from '../api/apiHandler';
 
 export const SupplierContext= createContext();
 
@@ -17,10 +18,17 @@ const SupplierContextData = ({children}) => {
                 let defaultSupplierId = localStorage.getItem("supplier_id")? localStorage.getItem("supplier_id") : '';
                 let defaultStudioShopName = localStorage.getItem("studioShopName")? localStorage.getItem("studioShopName") : '';
                 let accessToken = localStorage.getItem("accessToken")? localStorage.getItem("accessToken") : '';
+                let refreshToken = localStorage.getItem("refreshToken")? localStorage.getItem("refreshToken") : '';
                 setPhoneNumber(defaultPhoneNumber);
                 setSupplier_Id(defaultSupplierId);
                 setStudioShopName(defaultStudioShopName)
                 setAccessToken(accessToken);
+                if(defaultSupplierId !== '')
+                {
+                    setAuthHeader(accessToken, refreshToken);
+                    setLoginState(true);
+                }
+                    
             } catch (error) {
                 console.error('Error in Phone Number and ID retrieval and token', error)
             }
