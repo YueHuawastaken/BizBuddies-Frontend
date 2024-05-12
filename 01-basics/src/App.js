@@ -58,7 +58,7 @@ function App() {
                         <Route path="/suppliers/dashboard/:supplierId" element={<Dashboard />} />
                         <Route path="/customers/dashboard/:customerId" element={<DashboardForCustomers/>}/>
                         <Route path="/search-results" element={<SearchResults />} />
-                        <Route path="/suppliers/:productId/products/" element={<ProductDetailsForDashBoard />} />
+                        <Route path="/suppliers/:product_id/products/" element={<ProductDetailsForDashBoard />} />
                         <Route path="/suppliers/:productId/update" element={<UpdateProductForm />} />
                         <Route path="/paymentsuccess" element={<SuccessPage />} />
                       </Routes>

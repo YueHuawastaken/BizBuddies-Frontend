@@ -79,16 +79,16 @@ export default function Register (){
             setErrorNotification('Fields cannot empty')
         }
         else if (studioShopName === ""){
-            setErrorNotification('Username cannot be empty')
+            setErrorNotification('Studio/Shop Name cannot be empty')
         }
         else if (phoneNumber === ""){
-            setErrorNotification('Email cannot be empty')
+            setErrorNotification('Phone Number cannot be empty')
         }
         else if (zhiFuVerification === ""){
-            setErrorNotification('Email cannot be empty')
+            setErrorNotification('ZhiFuVerification cannot be empty')
         }
         else if (wxId === ""){
-            setErrorNotification('Email cannot be empty')
+            setErrorNotification('Wei Xing ID cannot be empty')
         }
         else if (password === ""){
             setErrorNotification('password cannot be empty')
@@ -99,11 +99,8 @@ export default function Register (){
         else if (secret === ""){
             setErrorNotification('secret cannot be empty')
         }
-        else if (!passwordRegexPattern.test(studioShopName)){
-            setErrorNotification('Invalid User Name')
-        }
         else if (!phoneNumberRegexPattern.test(phoneNumber)){
-            setErrorNotification('invalid email characters or format')
+            setErrorNotification('invalid phone number characters or format')
         }
         else if (!passwordRegexPattern.test(password)){
             setErrorNotification('Invalid password')
@@ -181,7 +178,7 @@ export default function Register (){
                                 />
                             </Form.Group>
                             <Form.Group className="ms-4 mb-3" style={{maxWidth: '350px', minWidth:'350px', maxHeight:'60px'}}>
-                                <Form.Label style={{fontSize:"12px"}}>Phone Number</Form.Label>
+                                <Form.Label style={{fontSize:"12px"}}>Zhi Fu Verification</Form.Label>
                                 <Form.Control   type="text" 
                                                 placeholder="Enter Zhi Fu Verification"
                                                 name="zhiFuVerification"

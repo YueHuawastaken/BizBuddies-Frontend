@@ -20,7 +20,7 @@ export default function ProductDetailsForDashBoard () {
     const {supplier_id, setSupplier_Id} = useContext(SupplierContext);
     const {idOfProductForDeletion, setIdOfProductForDeletion} = useContext(DeletionContext);
 
-    const {productId} = useParams();
+    const {product_id} = useParams();
     
     let navigate = useNavigate();
 
@@ -31,13 +31,14 @@ export default function ProductDetailsForDashBoard () {
 
     const supplierIdRef = useRef(supplier_id);
 
-    const retrieveProductById = async (productId) => {
+    const retrieveProductById = async (product_id) => {
+        console.log("route hit")
         try{
-            let response = await APIHandler.get(`/suppliers/${productId}/products?supplier_id=${supplier_id || supplierIdRef.current}`);
-            console.log('retrieving single product', response.data.product);
-            setSingleProductData(response.data.product)
+            let response = await APIHandler.get(`/suppliers/${supplier_id || supplierIdRef.current}/${product_id}/products?`);
+            console.log('retrieving single product', response.data.products);
+            setSingleProductData(response.data.products)
         } catch (error) {
-            console.error('error retrieving product data', error)
+            console.log('error retrieving product data', error)
         }
     }
 
@@ -45,7 +46,7 @@ export default function ProductDetailsForDashBoard () {
         if (localStorage.getItem('supplier_id')){
             setSupplier_Id(localStorage.getItem('supplier_id'))
         }
-        retrieveProductById(productId)}
+        retrieveProductById(product_id)}
     ,[])
 
     return (
@@ -75,7 +76,7 @@ export default function ProductDetailsForDashBoard () {
                         {singleProductData.productName} 
                     </Card.Title>
                     <Card.Text> 
-                        <span style={{fontWeight:'600'}}>Version Name: </span> {singleProductData.versionName} 
+                        <span style={{fontWeight:'600'}}>Version Name: </span> {singleProductData.productVersion[0].versionName} 
                     </Card.Text>
                     {singleProductData.suppliers? (
                         <Card.Text> 
@@ -90,13 +91,13 @@ export default function ProductDetailsForDashBoard () {
                     <Card.Text> 
                         <span style={{fontWeight:'600'}}>Price: </span> {singleProductData.price} 
                     </Card.Text>
-                    <Card.Text>
+                    {/* <Card.Text>
                         <span style={{fontWeight:'600'}}>Date created: </span> {singleProductData.date_created.slice(0,10)} 
-                    </Card.Text>
+                    </Card.Text> */}
                     <Link to={`/suppliers/${singleProductData.id}/update`} >
                         <Button variant="secondary">Update Item</Button>
                     </ Link>
-                    <Button variant="danger" className="ms-3" onClick={()=>setIdOfProductForDeletion(productId)}>Delete Item</Button>
+                    <Button variant="danger" className="ms-3" onClick={()=>setIdOfProductForDeletion(product_id)}>Delete Item</Button>
                     </Card.Body>
                 </Card>
                 <DeleteConfirmation />
