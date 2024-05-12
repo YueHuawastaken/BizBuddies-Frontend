@@ -13,12 +13,12 @@ import APIHandler, { setAuthHeader } from '../api/apiHandler';
 export default function CustomerLogin (){
 
     // context
-    const {setUserName} = useContext(CustomerContext);
-    const {setCustomer_Id} = useContext(CustomerContext);
+    const {setUsername} = useContext(CustomerContext);
+    const {setCustomerId} = useContext(CustomerContext);
     const {setLoginState} = useContext(CustomerContext);
 
     // state
-    const [email, setEmail] = useState('');
+    const [phoneNumber, setPhoneNumber] = useState('');
     const [password, setPassword] = useState('');
 
     const [errorNotification, setErrorNotification] = useState('');
@@ -31,9 +31,9 @@ export default function CustomerLogin (){
     }
 
     // Data
-    const handleLoginEmail = (event) => {
+    const handleLoginPhoneNumber = (event) => {
         setErrorNotification('');
-        setEmail(event.target.value);
+        setPhoneNumber(event.target.value);
     }
 
     const handlePassword = (event) => {
@@ -49,19 +49,19 @@ export default function CustomerLogin (){
 
         event.preventDefault();
 
-        const emailRegexPattern = /^[a-zA-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+        const phoneNumberRegexPattern =  /^\+\d{7,13}$|^\d{8,14}$/;
         const passwordRegexPattern = /^[a-zA-Z0-9._%+\-!@#$&*()]*$/i;
 
-        if (email === "" && password ===""){
+        if (phoneNumber === "" && password ===""){
             setErrorNotification('Fields cannot empty')
         }
-        else if (email === ""){
+        else if (phoneNumber === ""){
             setErrorNotification('Email cannot be empty')
         }
         else if (password === ""){
             setErrorNotification('password cannot be empty')
         }
-        else if (!emailRegexPattern.test(email)){
+        else if (!phoneNumberRegexPattern.test(phoneNumber)){
             setErrorNotification('invalid email characters or format')
         }
         else if (!passwordRegexPattern.test(password)){
@@ -75,7 +75,7 @@ export default function CustomerLogin (){
                 console.log('try route hit in login handle submit')
 
                 let loginResponse = await APIHandler.post('/customers/login', {
-                    "email": email,
+                    "phoneNumber": phoneNumber,
                     "password": password,
                 })
 
@@ -83,7 +83,7 @@ export default function CustomerLogin (){
                 let refreshToken = await loginResponse.data.refreshToken
                 
                 let ID = await loginResponse.data.customer_id
-                let Username = await loginResponse.data.userName
+                let Username = await loginResponse.data.username
 
                 console.log('access token react =>', accessToken)
                 console.log('refresh token react =>', refreshToken)
@@ -91,11 +91,11 @@ export default function CustomerLogin (){
                 setAuthHeader(accessToken, refreshToken)
                 setLoginState(true);
 
-                await setCustomer_Id(ID)
-                await setUserName(Username)
+                await setCustomerId(ID)
+                await setUsername(Username)
 
                 localStorage.setItem("customer_id", ID)
-                localStorage.setItem("userName", Username)
+                localStorage.setItem("username", Username)
 
                 if (ID){
                     navigateToDashBoard(ID);
@@ -114,13 +114,13 @@ export default function CustomerLogin (){
                     <Col>
                         <Button variant="secondary" className="ms-4 mt-2 mb-3" onClick={handleGoBack}> Back </Button>
                         <Form onSubmit={handleSubmit}>
-                            <Form.Group className="ms-4 mb-3" controlId="formBasicEmail" style={{maxWidth: '350px', minWidth:'350px'}}>
-                                <Form.Label>Email address</Form.Label>
-                                <Form.Control   type="email" 
-                                                placeholder="Enter email"
+                            <Form.Group className="ms-4 mb-3" style={{maxWidth: '350px', minWidth:'350px'}}>
+                                <Form.Label>Phone Number</Form.Label>
+                                <Form.Control   type="text" 
+                                                placeholder="Enter Phone Number"
                                                 name="email"
-                                                value={email}
-                                                onChange={(event) => handleLoginEmail(event)}
+                                                value={phoneNumber}
+                                                onChange={(event) => handleLoginPhoneNumber(event)}
                                 />
                             </Form.Group>                    
                             <Form.Group className="ms-4 mb-3" controlId="formBasicPassword" style={{maxWidth: '350px', minWidth:'300px'}}>

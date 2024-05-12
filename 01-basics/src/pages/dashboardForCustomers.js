@@ -16,7 +16,7 @@ import { DashBoardContext } from "../context/dashboard-context";
 
 export default function Dashboard (){
 
-    const {customer_id, setCustomer_Id, userName, setUserName} = useContext(CustomerContext);
+    const {customer_id, setCustomerId, username, setUsername} = useContext(CustomerContext);
     const {reRender} = useContext(DashBoardContext);
 
     const [productsData, setProductsData] = useState();
@@ -26,7 +26,7 @@ export default function Dashboard (){
     
     let navigate = useNavigate();
 
-    const userNameRef = useRef();
+    const usernameRef = useRef();
     const customerIdRef = useRef();
 
     const handleToggleButton = (event) => {
@@ -80,7 +80,7 @@ export default function Dashboard (){
     }
 
     useEffect(() => {
-        console.log('useEffect hit', customer_id, userName);
+        console.log('useEffect hit', customer_id, username);
 
         if (localStorage.getItem('accessToken')){
 
@@ -89,13 +89,13 @@ export default function Dashboard (){
             try {
 
                 reAuth();
-                if (localStorage.getItem("customer_id") && localStorage.getItem("userName")){
-                    setCustomer_Id(localStorage.getItem("customer_id"));
-                    setUserName(localStorage.getItem("userName"));
+                if (localStorage.getItem("customer_id") && localStorage.getItem("username")){
+                    setCustomerId(localStorage.getItem("customer_id"));
+                    setUsername(localStorage.getItem("username"));
                 }
 
-                if (customer_id && userName){
-                    userNameRef.current = userName;
+                if (customer_id && username){
+                    usernameRef.current = username;
                     customerIdRef.current = customer_id;
             
                     retrieveCustomerProducts().then((data)=>{
@@ -114,7 +114,7 @@ export default function Dashboard (){
             navigate('/customers/login');
         }
     },
-    [customer_id, userName, reRender])
+    [customer_id, username, reRender])
 
     return (
         <>
@@ -122,7 +122,7 @@ export default function Dashboard (){
             <div style={{display:"flex", justifyContent:"space-between", alignContent:"center"}}>
                 <span>
                     <Button variant="dark" className="ms-3 mb-2" onClick={handleGoBack}> Back </Button>
-                    <span className="mt-2 ms-4">Welcome: <span style={{color:'slateblue'}}> {userName? userName : userNameRef.current} </span></span>
+                    <span className="mt-2 ms-4">Welcome: <span style={{color:'slateblue'}}> {username? username : usernameRef.current} </span></span>
                 </span>
                 <span>
                 <Button variant="secondary" className="btn-sm me-4 mt-1" onClick={handleLogout}> Logout</Button>

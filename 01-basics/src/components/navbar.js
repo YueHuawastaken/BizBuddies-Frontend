@@ -4,6 +4,7 @@ import APIHandler, { headersData } from '../api/apiHandler';
 
 import { SupplierContext } from '../context/supplier-context'
 import { SearchContext } from '../context/search-context';
+import {CustomerContext} from '../context/customer-context'
 
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
@@ -17,6 +18,7 @@ export default function NavBar(){
 
     const {supplier_id, setSupplier_Id} = useContext(SupplierContext);
     const {setSearchData} = useContext(SearchContext);
+    const {customer_id, setCustomerId} = useContext (CustomerContext)
 
     const [productName, setProductName] = useState();
     const [errorNotification, setErrorNotification] = useState();
@@ -52,6 +54,36 @@ export default function NavBar(){
             navigate('/suppliers/login');
         }
     }
+    const handleCustomerLoginState = async () => {
+
+        if (localStorage.getItem('accessToken')){
+
+            console.log('get token')
+
+            try {
+
+                let accessToken = localStorage.getItem('accessToken');
+                headersData["Authorization"] = `Bearer ${accessToken}`
+                APIHandler.defaults.headers.common["Authorization"] = headersData["Authorization"]
+
+                await APIHandler.get('/customers/check-login');
+                console.log('jwt still in play')
+
+                if (localStorage.getItem('customer_id')){
+                    setCustomerId(localStorage.getItem('customer_id'))
+                }
+    
+                navigate(`/customers/dashboard/${customer_id}`);
+
+            } catch (error){
+                console.log('login again')
+                navigate('/customers/login');
+            }
+        } else {
+            navigate('/customers/login');
+        }
+    }
+
 
     const navigateToSearchResult = () => {
         navigate('/search-results')
@@ -120,14 +152,15 @@ export default function NavBar(){
                     <Nav className="justify-content-end flex-grow-1 pe-2 mb-3">
                         <Nav.Link onClick={handleLoginState} className="mt-2">Dashboard</Nav.Link>
                         <Nav.Link onClick={handleLoginState} className="mt-2">Start Listing</Nav.Link>
+                        <Nav.Link onClick={handleCustomerLoginState} className="mt-2">Customer Login</Nav.Link>
                         <NavDropdown
-                        title="Saved Works"
+                        title="Favourites"
                         id={`offcanvasNavbarDropdown-expand-${expand}`}
                         className="mt-2 me-4"
                         >
-                        <NavDropdown.Item onClick={handleLoginState}>Favorites (coming soon)</NavDropdown.Item>
+                        <NavDropdown.Item onClick={handleLoginState}>WishList (coming soon)</NavDropdown.Item>
                         <NavDropdown.Divider />
-                        <NavDropdown.Item onClick={handleLoginState}>Saved User (coming soon)</NavDropdown.Item>
+                        <NavDropdown.Item onClick={handleLoginState}>Saved Supplier (coming soon)</NavDropdown.Item>
                         </NavDropdown>
                     </Nav>
                     <Form onSubmit={handleSubmit} className="d-flex">

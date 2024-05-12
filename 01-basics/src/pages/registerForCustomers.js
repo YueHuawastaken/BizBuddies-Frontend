@@ -12,7 +12,7 @@ import APIHandler from '../api/apiHandler';
 export default function Register (){
 
     // state
-    const [userName, setUserName] = useState('');
+    const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const [warehouseAddress, setWarehouseAddress] = useState('');
@@ -33,7 +33,7 @@ export default function Register (){
     // Data
     const handleRegisterUserName = (event) => {
         setErrorNotification('');
-        setUserName(event.target.value);
+        setUsername(event.target.value);
     }
 
     const handleRegisterEmail = (event) => {
@@ -78,10 +78,10 @@ export default function Register (){
         const phoneNumberRegexPattern =  /^\+\d{7,13}$|^\d{8,14}$/;
         const addressRegexPattern = /^[a-zA-Z0-9\s,'-]*$/;
 
-        if (userName === "" && email === "" && phoneNumber === "" && warehouseAddress === "" && password ==="" && confirmPassword ==="" && secret ===""){
+        if (username === "" && email === "" && phoneNumber === "" && warehouseAddress === "" && password ==="" && confirmPassword ==="" && secret ===""){
             setErrorNotification('Fields cannot empty')
         }
-        else if (userName === ""){
+        else if (username === ""){
             setErrorNotification('Username cannot be empty')
         }
         else if (email === ""){
@@ -101,9 +101,6 @@ export default function Register (){
         }
         else if (secret === ""){
             setErrorNotification('secret cannot be empty')
-        }
-        else if (!passwordRegexPattern.test(userName)){
-            setErrorNotification('Invalid User Name')
         }
         else if (!emailRegexPattern.test(email)){
             setErrorNotification('invalid email characters or format')
@@ -133,7 +130,7 @@ export default function Register (){
                 console.log('route hit in Register handle submit')
 
                 await APIHandler.post('/customers/register', {
-                    "userName": userName,
+                    "username": username,
                     "email": email,
                     "phoneNumber": phoneNumber,
                     "warehouseAddress": warehouseAddress,
@@ -176,7 +173,7 @@ export default function Register (){
                                 <Form.Control   type="text" 
                                                 placeholder="Enter username"
                                                 name="name"
-                                                value={userName}
+                                                value={username}
                                                 onChange={(event) => handleRegisterUserName(event)}
                                 />
                             </Form.Group>

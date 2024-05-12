@@ -4,18 +4,18 @@ export const CustomerContext= createContext();
 
 const CustomerContextData = ({children}) => {
 
-    const [userName, setUserName] = useState('');
-    const [customerId, setCustomerId] = useState('');
+    const [username, setUsername] = useState('');
+    const [customer_id, setCustomerId] = useState('');
     const [accessToken, setAccessToken] = useState('');
     const [loginState, setLoginState] = useState(false);
 
     useEffect(()=> {
         const retrieveData = async() => {
             try{
-                let defaultUserName = localStorage.getItem("userName")? localStorage.getItem("userName") : '';
-                let defaultCustomerId = localStorage.getItem("customerId")? localStorage.getItem("customerId") : '';
+                let defaultUserName = localStorage.getItem("username")? localStorage.getItem("username") : '';
+                let defaultCustomerId = localStorage.getItem("customer_id")? localStorage.getItem("customer_id") : '';
                 let accessToken = localStorage.getItem("accessToken")? localStorage.getItem("accessToken") : '';
-                setUserName(defaultUserName);
+                setUsername(defaultUserName);
                 setCustomerId(defaultCustomerId);
                 setAccessToken(accessToken);
             } catch (error) {
@@ -26,7 +26,7 @@ const CustomerContextData = ({children}) => {
     }, [])
 
     return(
-        <CustomerContext.Provider value={{userName, setUserName, customerId, setCustomerId, accessToken, setAccessToken, loginState, setLoginState}}>
+        <CustomerContext.Provider value={{username, setUsername, customer_id, setCustomerId, accessToken, setAccessToken, loginState, setLoginState}}>
             {children}
         </CustomerContext.Provider>
     )
