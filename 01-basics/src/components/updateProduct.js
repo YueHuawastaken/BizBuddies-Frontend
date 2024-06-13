@@ -48,16 +48,16 @@ export default function UpdateProductForm(){
             console.log('frontend retrieve product by id hit, supplier_id here=>', supplier_id)
             console.log('frontend product params', productId);
 
-            let response = await APIHandler.get(`/suppliers/update/${productId}?supplier_id=${supplier_id || supplierIdRef.current}`);
+            let response = await APIHandler.get(`/suppliers/${supplier_id}/update/${productId}?supplier_id=${supplier_id || supplierIdRef.current}`);
             console.log('retrieving single product', response.data.product);
 
-            setSingleProductData(response.data.products);
-            setProductName(response.data.products.productName);
-            setDescription(response.data.products.description);
-            setVersionName(response.data.products.versionName);
-            setPrice(response.data.products.price);
-            setImage_Url(response.data.products.image_url);
-            setRetrievedProductId(response.data.products.id);
+            setSingleProductData(response.data.product);
+            setProductName(response.data.product.productName);
+            setDescription(response.data.product.description);
+            setVersionName(response.data.product.productVersion[0].versionName);
+            setPrice(response.data.product.productVersion[0].price);
+            setImage_Url(response.data.product.productVersion[0].image_url);
+            setRetrievedProductId(response.data.product.id);
 
             setImageUploaded(false);
 
@@ -122,7 +122,7 @@ export default function UpdateProductForm(){
             try {
                 console.log("frontend supplierIdref here", supplierIdRef.current)
                 console.log("frontend payload here", payload);
-                await APIHandler.post(`/suppliers/${productId}/update?supplier_id=${supplierIdRef.current}`, payload);
+                await APIHandler.post(`/suppliers/${supplier_id}/${productId}/update?supplier_id=${supplierIdRef.current}`, payload);
                 
                 console.log('product updated')
                 setSuccessNotification("Product Updated");

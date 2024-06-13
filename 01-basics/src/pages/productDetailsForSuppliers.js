@@ -89,7 +89,7 @@ export default function ProductDetailsForDashBoard () {
                         {singleProductData.description}
                     </Card.Text>
                     <Card.Text> 
-                        <span style={{fontWeight:'600'}}>Price: </span> {singleProductData.price} 
+                        <span style={{fontWeight:'600'}}>Price: </span> {singleProductData.productVersion[0].price} 
                     </Card.Text>
                     {/* <Card.Text>
                         <span style={{fontWeight:'600'}}>Date created: </span> {singleProductData.date_created.slice(0,10)} 

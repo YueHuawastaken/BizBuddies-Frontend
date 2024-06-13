@@ -181,9 +181,9 @@ export default function Dashboard (){
                                             <Card style={{ width: '18rem', marginTop: '10px', marginBottom:'20px'}}>
                                             <Card.Img variant="top" src={product.image_url} style={{ minHeight: '220px', maxHeight:'220px', objectFit:'contain'}}/>
                                             <Card.Body>
-                                                <Card.Title>{product.productName}</Card.Title>
+                                                <Card.Title>{product.products.productName}</Card.Title>
                                                 <Card.Text>
-                                                {product.description}
+                                                {product.products.description}
                                                 </Card.Text>
                                                     <Link to={`/suppliers/${product.id}/products`} >
                                                         <Button variant="dark" className="btn-sm"> Details </Button>
