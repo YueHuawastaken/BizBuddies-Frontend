@@ -136,7 +136,10 @@ export default function ProductDetails () {
         <>
             <Button variant="secondary" className="ms-4 mt-2 mb-3" onClick={handleGoBack}> Back </Button>
             
-            {singleProductData? (
+            {singleProductData? <>
+            {singleProductData.map((productversion) => 
+                (
+                    <>
                 <Card   style=  {{
                                     width: '90%',
                                     maxWidth:'800px',
@@ -146,7 +149,7 @@ export default function ProductDetails () {
                                 }}
                         className="product-details"
                 >
-                    <Card.Img   variant="top" src={singleProductData.image_url} 
+                    <Card.Img   variant="top" src={productversion.image_url} 
                                 style={{    maxHeight: '350px', 
                                             maxWidth: '800px', 
                                             objectFit:'contain', 
@@ -155,17 +158,17 @@ export default function ProductDetails () {
                     <Card.Body>                        
                     <Card.Title>
                         <h5> Product Name: </h5> 
-                        {singleProductData.products.productName || singleProductPadding.products.productName} 
+                        {productversion.products.productName || productversion.products.productName} 
                     </Card.Title>
                     <Card.Text>
                         <h5> Description: </h5>
-                        {singleProductData.products.description || singleProductPadding.products.description}
+                        {productversion.products.description || productversion.products.description}
                     </Card.Text>
                     <Card.Text> 
-                        <span style={{fontWeight:'600'}}>Version Name: </span> {singleProductData.versionName || singleProductPadding.versionName} 
+                        <span style={{fontWeight:'600'}}>Version Name: </span> {productversion.versionName || productversion.versionName} 
                     </Card.Text>
                     <Card.Text> 
-                        <span style={{fontWeight:'600'}}>Price: </span> {singleProductData.price || singleProductPadding.price} 
+                        <span style={{fontWeight:'600'}}>Price: </span> {productversion.price || productversion.price} 
                     </Card.Text>
                     {/* <Card.Text>
                         <span style={{fontWeight:'600'}}>Date created: </span> {singleProductData.date_created.slice(0,10) || singleProductPadding.date_created.slice(0,10)} 
@@ -174,8 +177,12 @@ export default function ProductDetails () {
                     <Button variant="success" onClick={()=>handleLoginStateForCart()}>Add to Cart</Button>
                     </Card.Body>
                 </Card>
-            ) : (
-                <div> Loading... </div>
+                </>
+                )
+            )}
+            </>
+             : (
+                <div className="ms-4"> Loading... </div>
             )}
 
             <div id='cart-add-notify' style={{      backgroundColor:'green', 

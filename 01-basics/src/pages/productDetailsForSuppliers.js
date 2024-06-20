@@ -57,7 +57,6 @@ export default function ProductDetailsForDashBoard () {
             {singleProductData.productVersion.map((productversion) => 
                 (
                     <>
-                    {console.log("here")}
                     <Card   style=  {{    
                                         width: '90%', 
                                         maxWidth:'800px', 
