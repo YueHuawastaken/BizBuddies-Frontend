@@ -175,7 +175,7 @@ export default function AddProductForm(){
                                         value={exproductName}
                                         onChange={handleSelect}
                         >
-                            <option >Select Extisting Product</option>
+                            <option value={""} >Select Extisting Product</option>
                             {productsData?
                             <>
                             {productsData.map((product) => {
