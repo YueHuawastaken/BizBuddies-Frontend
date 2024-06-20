@@ -155,11 +155,11 @@ export default function ProductDetails () {
                     <Card.Body>                        
                     <Card.Title>
                         <h5> Product Name: </h5> 
-                        {singleProductData.productName || singleProductPadding.productName} 
+                        {singleProductData.products.productName || singleProductPadding.products.productName} 
                     </Card.Title>
                     <Card.Text>
                         <h5> Description: </h5>
-                        {singleProductData.description || singleProductPadding.description}
+                        {singleProductData.products.description || singleProductPadding.products.description}
                     </Card.Text>
                     <Card.Text> 
                         <span style={{fontWeight:'600'}}>Version Name: </span> {singleProductData.versionName || singleProductPadding.versionName} 
@@ -167,9 +167,9 @@ export default function ProductDetails () {
                     <Card.Text> 
                         <span style={{fontWeight:'600'}}>Price: </span> {singleProductData.price || singleProductPadding.price} 
                     </Card.Text>
-                    <Card.Text>
+                    {/* <Card.Text>
                         <span style={{fontWeight:'600'}}>Date created: </span> {singleProductData.date_created.slice(0,10) || singleProductPadding.date_created.slice(0,10)} 
-                    </Card.Text>
+                    </Card.Text> */}
                     
                     <Button variant="success" onClick={()=>handleLoginStateForCart()}>Add to Cart</Button>
                     </Card.Body>
