@@ -178,12 +178,13 @@ export default function Dashboard (){
                                 <Row xs={1} s={2} md={2} lg={3} xl={4} xxl={5} style={{justifyContent:'flex-start'}}>
                                     {productsData.map(product => 
                                         <Col style={{marginLeft:'0px'}}>
+                                            {console.log(product)}
                                             <Card style={{ width: '18rem', marginTop: '10px', marginBottom:'20px'}}>
-                                            <Card.Img variant="top" src={product.image_url} style={{ minHeight: '220px', maxHeight:'220px', objectFit:'contain'}}/>
+                                            <Card.Img variant="top" src={product.productVersion[0].image_url} style={{ minHeight: '220px', maxHeight:'220px', objectFit:'contain'}}/>
                                             <Card.Body>
-                                                <Card.Title>{product.products.productName}</Card.Title>
+                                                <Card.Title>{product.productName}</Card.Title>
                                                 <Card.Text>
-                                                {product.products.description}
+                                                {product.description}
                                                 </Card.Text>
                                                     <Link to={`/suppliers/${product.id}/products`} >
                                                         <Button variant="dark" className="btn-sm"> Details </Button>

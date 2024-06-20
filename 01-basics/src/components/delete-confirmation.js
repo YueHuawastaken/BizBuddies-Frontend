@@ -34,7 +34,7 @@ export default function DeleteConfirmation () {
 
     const handleDeleteConfirmationButton = () => {
         try {
-            APIHandler.post(`/suppliers/${idOfProductForDeletion}/delete?supplier_id=${supplier_id}`);
+            APIHandler.post(`/suppliers/${supplier_id}/${idOfProductForDeletion}/delete?supplier_id=${supplier_id}`);
             setIdOfProductForDeletion('')
             console.log('product deleted');
             setReRender(!reRender);

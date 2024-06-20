@@ -53,56 +53,63 @@ export default function ProductDetailsForDashBoard () {
         <>
             <Button variant="secondary" className="ms-4 mt-2 mb-3" onClick={handleGoBack}> Back </Button>
 
-            {singleProductData? (
-                <>
-                <Card   style=  {{    
-                                    width: '90%', 
-                                    maxWidth:'800px', 
-                                    marginBottom: idOfProductForDeletion? '20px':'150px',
-                                    marginLeft:'20px',
-                                }}
-                        className="product-details"
-                >
-                    <Card.Img   variant="top" src={singleProductData.image_url} 
-                                style={{    maxHeight: '350px', 
-                                            maxWidth: '800px', 
-                                            objectFit:'contain', 
-                                            border: '1px solid silver'}}                                            
-                    />
-                    <Card.Body>
-                        
-                    <Card.Title>
-                        <h5> Product Name: </h5> 
-                        {singleProductData.productName} 
-                    </Card.Title>
-                    <Card.Text> 
-                        <span style={{fontWeight:'600'}}>Version Name: </span> {singleProductData.productVersion[0].versionName} 
-                    </Card.Text>
-                    {singleProductData.suppliers? (
+            {singleProductData? <>
+            {singleProductData.productVersion.map((productversion) => 
+                (
+                    <>
+                    {console.log("here")}
+                    <Card   style=  {{    
+                                        width: '90%', 
+                                        maxWidth:'800px', 
+                                        marginBottom: idOfProductForDeletion? '20px':'150px',
+                                        marginLeft:'20px',
+                                    }}
+                            className="product-details"
+                    >
+                        {/* <Card.Img   variant="top" src={productversion.image_url} 
+                                    style={{    maxHeight: '350px', 
+                                                maxWidth: '800px', 
+                                                objectFit:'contain', 
+                                                border: '1px solid silver'}}                                            
+                        /> */}
+                        <Card.Body>
+                        <Card.Img variant="top" src={productversion.image_url} style={{ minHeight: '220px', maxHeight:'220px', objectFit:'contain'}}/>
+                        <Card.Title>
+                            <h5> Product Name: </h5> 
+                            {singleProductData.productName} 
+                        </Card.Title>
                         <Card.Text> 
-                            <span style={{fontWeight:'600'}}>Studio/Shop Name: </span> <Link to={`/products/suppliers/${singleProductData.suppliers.id}`} > {singleProductData.suppliers.studioShopName} </Link> 
+                            <span style={{fontWeight:'600'}}>Version Name: </span> {productversion.versionName} 
                         </Card.Text>
-                        ) : null
-                    }
-                    <Card.Text>
-                        <h6> Description: </h6>
-                        {singleProductData.description}
-                    </Card.Text>
-                    <Card.Text> 
-                        <span style={{fontWeight:'600'}}>Price: </span> {singleProductData.productVersion[0].price} 
-                    </Card.Text>
-                    {/* <Card.Text>
-                        <span style={{fontWeight:'600'}}>Date created: </span> {singleProductData.date_created.slice(0,10)} 
-                    </Card.Text> */}
-                    <Link to={`/suppliers/${singleProductData.id}/update`} >
-                        <Button variant="secondary">Update Item</Button>
-                    </ Link>
-                    <Button variant="danger" className="ms-3" onClick={()=>setIdOfProductForDeletion(product_id)}>Delete Item</Button>
-                    </Card.Body>
-                </Card>
-                <DeleteConfirmation />
+                        {productversion.suppliers? (
+                            <Card.Text> 
+                                <span style={{fontWeight:'600'}}>Studio/Shop Name: </span> {productversion.suppliers.studioShopName /* <Link to={`/products/suppliers/${productversion.suppliers.id}`} > {productversion.suppliers.studioShopName} </Link>  */}
+                            </Card.Text>
+                            ) : null
+                        }
+                        <Card.Text>
+                            <h6> Description: </h6>
+                            {singleProductData.description}
+                        </Card.Text>
+                        <Card.Text> 
+                            <span style={{fontWeight:'600'}}>Price: </span> {productversion.price} 
+                        </Card.Text>
+                        {/* <Card.Text>
+                            <span style={{fontWeight:'600'}}>Date created: </span> {singleProductData.date_created.slice(0,10)} 
+                        </Card.Text> */}
+                        <Link to={`/suppliers/${productversion.id}/update`} >
+                            <Button variant="secondary">Update Item</Button>
+                        </ Link>
+                        <Button variant="danger" className="ms-3" onClick={()=>setIdOfProductForDeletion(productversion.id)}>Delete Item</Button>
+                        </Card.Body>
+                    </Card>
+                    {}
+                    {idOfProductForDeletion===productversion.id  && <DeleteConfirmation /> }
+                </>
+                )
+            )}
             </>
-            ) : (
+             : (
                 <div className="ms-4"> Loading... </div>
             )}
         </>

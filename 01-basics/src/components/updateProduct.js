@@ -52,12 +52,12 @@ export default function UpdateProductForm(){
             console.log('retrieving single product', response.data.product);
 
             setSingleProductData(response.data.product);
-            setProductName(response.data.product.productName);
-            setDescription(response.data.product.description);
-            setVersionName(response.data.product.productVersion[0].versionName);
-            setPrice(response.data.product.productVersion[0].price);
-            setImage_Url(response.data.product.productVersion[0].image_url);
-            setRetrievedProductId(response.data.product.id);
+            setProductName(response.data.product.products.productName);
+            setDescription(response.data.product.products.description);
+            setVersionName(response.data.product.versionName);
+            setPrice(response.data.product.price);
+            setImage_Url(response.data.product.image_url);
+            setRetrievedProductId(response.data.product.products.id);
 
             setImageUploaded(false);
 
@@ -108,7 +108,7 @@ export default function UpdateProductForm(){
             
             setErrorNotification('');
             setSuccessNotification('');
-
+            console.log("Checking productversion here", singleProductData.id)
             const payload = {
                 "productId": retrievedProductId,
                 "productName": productName,
@@ -116,13 +116,14 @@ export default function UpdateProductForm(){
                 "versionName": versionName,
                 "price": price,
                 "image_url": image_url,
-                "supplier_id": supplier_id
+                "supplier_id": supplier_id,
+                "productVersion_id" : singleProductData.id
             }
 
             try {
                 console.log("frontend supplierIdref here", supplierIdRef.current)
                 console.log("frontend payload here", payload);
-                await APIHandler.post(`/suppliers/${supplier_id}/${productId}/update?supplier_id=${supplierIdRef.current}`, payload);
+                await APIHandler.post(`/suppliers/${supplier_id}/${retrievedProductId}/update?supplier_id=${supplierIdRef.current}`, payload);
                 
                 console.log('product updated')
                 setSuccessNotification("Product Updated");
@@ -189,7 +190,7 @@ export default function UpdateProductForm(){
                     {imageUploaded && image_url? ( null ):
                                (   <div className="mt-4">
                                         <h6> Existing Picture </h6>
-                                        <img src={singleProductData.image_url} alt="placeholder_image" className="oldpic" style={{maxWidth:'500px'}}/>
+                                        <img src={image_url} alt="placeholder_image" className="oldpic" style={{maxWidth:'500px'}}/>
                                     </div>    
                                 )}
                 <UploadWidget />
